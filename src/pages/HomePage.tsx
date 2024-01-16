@@ -7,8 +7,8 @@ const HomePage = () => {
     <div
       className={` ${
         context.darkLight
-          ? " bg-[#fff] text-[#1A1A1F]"
-          : "bg-[#0e101c] text-[#FFF]"
+          ? " bg-[#F3F2FA] text-[#1A1A1F]"
+          : "bg-[#0e101cf8] text-[#FFF]"
       }   flex flex-col items-center  justify-around  w-full`}
     >
       <div className=" flex flex-col items-center justify-center gap-16 w-full md:flex-row md:justify-between md:pl-10 xl:pl-[76px] mt-[64px]">
@@ -21,9 +21,9 @@ const HomePage = () => {
           ბლოგი
         </h1>
       </div>
-      <section className=" w-[350px] flex flex-col items-center justify-center gap-6 mt-[64px] mb-[56px]">
+      <section className=" w-[340px] flex flex-col items-center justify-center gap-6 mt-[64px] mb-[56px]">
         <img
-          className=" w-[350px] h-[328px] rounded-xl bg-teal-500"
+          className=" w-[340px] h-[328px] rounded-xl bg-teal-500"
           src="./assets/smallicon.svg"
           alt=""
         />

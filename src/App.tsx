@@ -3,7 +3,7 @@ import HomePage from "./pages/HomePage";
 import AddBlog from "./pages/AddBlog";
 import SingleBlog from "./pages/SingleBlog";
 import ErrorPage from "./pages/ErrorPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import { MyContext } from "./context";
 import ScrollToTop from "./utils/ScrollOnTop";
@@ -16,11 +16,22 @@ export type MyContextProps = {
   setDarkLight: (value: boolean) => void;
   login: boolean;
   setLogin: (value: boolean) => void;
+  findFont: string;
+  setFindFont: (value: string) => void;
+  fontMenu: boolean;
+  setFontMenu: (value: boolean) => void;
 };
 
 function App() {
   const [darkLight, setDarkLight] = useState<boolean>(true);
   const [login, setLogin] = useState<boolean>(false);
+  const [findFont, setFindFont] = useState<string>("გრიგოლია");
+  const [fontMenu, setFontMenu] = useState<boolean>(false);
+
+  useEffect(() => {
+    document.body.style.fontFamily = findFont;
+  }, [findFont]);
+
   return (
     <MyContext.Provider
       value={{
@@ -28,6 +39,10 @@ function App() {
         setDarkLight,
         login,
         setLogin,
+        findFont,
+        setFindFont,
+        fontMenu,
+        setFontMenu,
       }}
     >
       <ScrollToTop />
