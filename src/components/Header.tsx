@@ -7,7 +7,7 @@ export default function Header() {
       className={` ${
         context.darkLight
           ? " bg-[#fff] text-[#1A1A1F]"
-          : "bg-[#050505] text-[#FFF]"
+          : "bg-[#0e101c] text-[#FFF]"
       } flex flex-col items-center justify-between w-full md:h-20 px-5 pt-5 md:px-10 xl:px-[76px] border-b border-solid border-[#E4E3EB]`}
     >
       <div className=" flex flex-row items-center justify-between w-full">
