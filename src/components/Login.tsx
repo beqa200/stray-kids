@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useUserContext } from "../context";
-
+import { IoMdClose } from "react-icons/io";
 export default function Login() {
   const context = useUserContext();
   const {
@@ -26,7 +26,7 @@ export default function Login() {
           }}
           className=" absolute right-5 top-3 cursor-pointer"
         >
-          <p>X</p>
+          <IoMdClose size={24} />
         </div>{" "}
         <p className=" text-[18px] md:text-[24px] font-bold leading-8 mb-5">
           შესვლა

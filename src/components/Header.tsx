@@ -6,9 +6,9 @@ export default function Header() {
     <header
       className={` ${
         context.darkLight
-          ? " bg-[#fff] text-[#1A1A1F]"
-          : "bg-[#0e101c] text-[#FFF]"
-      } flex flex-col items-center justify-between w-full md:h-20 px-5 pt-5 md:px-10 xl:px-[76px] border-b border-solid border-[#E4E3EB]`}
+          ? " bg-[#fff] text-[#1A1A1F] border-[#E4E3EB]"
+          : "bg-[#0e101c] text-[#FFF]  border-[#404049]"
+      } flex flex-col items-center justify-between w-full md:h-20 px-5 py-5 md:px-10 xl:px-[76px] border-b border-solid `}
     >
       <div className=" flex flex-row items-center justify-between w-full">
         <img
@@ -16,7 +16,7 @@ export default function Header() {
           src={` ${
             context.darkLight
               ? " ./assets/LOGO-02 3.png "
-              : "./assets/redberryLogot.png"
+              : "./assets/newLogo.svg"
           }`}
           alt=""
         />

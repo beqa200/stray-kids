@@ -6,16 +6,16 @@ export default function Footer() {
     <div
       className={`   ${
         context.darkLight
-          ? " bg-[#fff] text-[#1A1A1F]"
-          : "bg-[#0e101c] text-[#FFF]"
-      } flex flex-col items-start justify-between  w-full  gap-7  border-t border-solid border-[#E4E3EB] py-5 px-5 md:px-10 xl:px-[76px] `}
+          ? " bg-[#fff] text-[#1A1A1F] border-[#E4E3EB]"
+          : "bg-[#0e101c] text-[#FFF] border-[#404049]"
+      } flex flex-col items-start justify-between  w-full  gap-7  border-t border-solid  py-5 px-5 md:px-10 xl:px-[76px] `}
     >
       <img
         className="w-[80px] md:w-[150px]"
         src={` ${
           context.darkLight
             ? " ./assets/LOGO-02 3.png "
-            : "./assets/redberryLogot.png"
+            : "./assets/newLogo.svg"
         }`}
         alt=""
       />
