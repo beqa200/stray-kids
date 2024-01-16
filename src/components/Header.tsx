@@ -13,7 +13,11 @@ export default function Header() {
       <div className=" flex flex-row items-center justify-between w-full">
         <img
           className="w-[80px] md:w-[150px]"
-          src="./assets/LOGO-02 3.png"
+          src={` ${
+            context.darkLight
+              ? " ./assets/LOGO-02 3.png "
+              : "./assets/redberryLogot.png"
+          }`}
           alt=""
         />
 
