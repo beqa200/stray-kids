@@ -45,8 +45,8 @@ const Inputs = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mt-6 flex flex-col">
-        <div className="flex flex-row w-full justify-between">
+      <div className="mt-6 flex flex-col p-4">
+        <div className="flex flex-col space-y-10 md:space-y-0 md:space-x-2 md:flex-row w-full justify-between">
           {/* ავტორი */}
           <div className="flex flex-col">
             <label className="text-[#1A1A1F] text-sm font-medium leading-5 mb-2">
@@ -75,7 +75,7 @@ const Inputs = () => {
             hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
               placeholder="შეიყვანეთ ავტორი"
             />
-            <div className="text-xs leading-5 text-[#85858D]">
+            <div className="text-xs leading-5 text-[#85858D] ml-4">
               <li>minimum 4 symbols</li>
               <li>minimum 2 words</li>
               <li>only Georgian words</li>
@@ -112,7 +112,7 @@ const Inputs = () => {
                   : titleValue && !isValidating
                   ? "text-green-600"
                   : "text-gray-600"
-              } text-xs leading-5`}
+              } text-xs leading-5 ml-4`}
             >
               მინიმუმ 2 სიმბოლო
             </li>
@@ -137,8 +137,8 @@ const Inputs = () => {
               descriptionValue && !isValidating
                 ? "border-[#14D81C]"
                 : "border-[#E4E3EB]"
-            } min-h-[124px] bg-[#FCFCFD] border rounded-xl pt-3 pl-4
-          hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
+            } min-h-[124px]  bg-[#FCFCFD] border rounded-xl pt-3 pl-4
+          hover:border-[#5D37F3] hover:border-[1.5px] outline-none w-[300px] md:w-full`}
             placeholder="შეიყვანეთ აღწერა"
           ></textarea>
           <li
@@ -154,7 +154,7 @@ const Inputs = () => {
           </li>
         </div>
         {/*  */}
-        <div className="mt-6 flex flex-row justify-between space-x-2">
+        <div className="mt-6 flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between space-x-2">
           <div className="flex flex-col space-y-2">
             <label className="text-[#1A1A1F] text-sm font-medium leading-5">
               გამოქვეყნების თარიღი *
