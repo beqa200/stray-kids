@@ -1,4 +1,5 @@
 import { type FieldValues, useForm } from "react-hook-form";
+import errorIcon from "../../assets/errorIcon.svg";
 
 interface InputsForm {
   author: string;
@@ -32,8 +33,15 @@ const Inputs = () => {
     return words.length >= 2;
   };
 
+  const validateEmail = (value: string): boolean => {
+    const emailRegex = /^[^\s]+@redberry\.ge$/;
+    return emailRegex.test(value);
+  };
+
   const titleValue = watch("title");
   const descriptionValue = watch("description");
+  const dateValue = watch("date");
+  const emailValue = watch("email");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,18 +69,14 @@ const Inputs = () => {
                 },
               })}
               type="text"
-              className="w-[288px] mb-2 py-3 pl-4 border border-[#E4E3EB] bg-[#FCFCFD] rounded-xl
-            hover:border-[#5D37F3] hover:border-[1.5px] outline-none"
+              className={`${
+                errors.author ? "border-[#EA1919]" : "border-[#E4E3EB]"
+              } w-[288px] mb-2 py-3 pl-4 border border-[#E4E3EB] bg-[#FCFCFD] rounded-xl
+            hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
               placeholder="შეიყვანეთ ავტორი"
             />
             <div className="text-xs leading-5 text-[#85858D]">
-              <li
-                className={`${
-                  errors.title ? "text-red-500" : "text-green-700"
-                }`}
-              >
-                minimum 4 symbols
-              </li>
+              <li>minimum 4 symbols</li>
               <li>minimum 2 words</li>
               <li>only Georgian words</li>
             </div>
@@ -128,7 +132,7 @@ const Inputs = () => {
               },
             })}
             className={`${
-              errors.description ? "border-[#EA1919]" : "border-[#E4E3EB]"
+              errors.description ? "border-[#EA1919]" : "border-[#14D81C]"
             } ${
               descriptionValue && !isValidating
                 ? "border-[#14D81C]"
@@ -150,16 +154,24 @@ const Inputs = () => {
           </li>
         </div>
         {/*  */}
-        <div className="mt-6 flex flex-row justify-between">
+        <div className="mt-6 flex flex-row justify-between space-x-2">
           <div className="flex flex-col space-y-2">
             <label className="text-[#1A1A1F] text-sm font-medium leading-5">
               გამოქვეყნების თარიღი *
             </label>
             <input
-              {...register("date")}
+              {...register("date", {
+                required: "date must be a valid date",
+              })}
               type="date"
-              className="w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
-            hover:border-[#5D37F3] hover:border-[1.5px] outline-none"
+              className={`${
+                errors.date ? "border-[#EA1919]" : "border-[#14D81C]"
+              } w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
+            hover:border-[#5D37F3] hover:border-[1.5px] outline-none ${
+              dateValue && !isValidating
+                ? "border-green-600"
+                : "border-[#E4E3EB]"
+            }`}
             />
           </div>
           <div className="flex flex-col space-y-2">
@@ -183,14 +195,29 @@ const Inputs = () => {
           <input
             {...register("email", {
               required: "Email is required",
+              validate: (value) =>
+                validateEmail(value) || "Email should end with redberry.ge",
             })}
             type="text"
             placeholder="Example@redberry.ge"
-            className="w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
-  hover:border-[#5D37F3] hover:border-[1.5px] outline-none"
+            className={`${
+              errors.email ? "border-[#EA1919]" : "border-[#14D81C]"
+            } ${
+              emailValue && !isValidating
+                ? "border-[#14D81C]"
+                : "border-[#E4E3EB]"
+            } w-[288px] py-3 px-4 rounded-xl border bg-[#FCFCFD]
+  hover:border-[#5D37F3] hover:border-[1.5px] outline-none `}
           />
         </div>
-
+        {errors.email ? (
+          <div className="flex flex-row gap-x-2 mt-2">
+            <img src={errorIcon} alt="errorIcon" />
+            <span className="text-[#EA1919] text-xs leading-5">
+              მეილი უნდა მთავრდებოდეს @redberry.ge-ით
+            </span>
+          </div>
+        ) : null}
         {/*  */}
         <div className="my-10 flex justify-end">
           <button
