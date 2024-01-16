@@ -12,10 +12,14 @@ const UploadFile = () => {
       >
         <img src={UploadIcon} alt="UploadIcon" />
         <p className="text-[#1A1A1F] text-sm leading-5">
-          ჩააგდეთ ფაილი აქ ან{" "}
-          <a className="underline font-medium" href="">
-            აირჩიეთ ფაილი
-          </a>
+          ჩააგდეთ ფაილი აქ ან
+          <input
+            type="file"
+            id="fileInput"
+            className="custom-file-input w-[120px] pl-1 font-medium"
+            name="picture"
+            value=""
+          />
         </p>
       </div>
     </div>
