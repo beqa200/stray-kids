@@ -1,14 +1,19 @@
 import UploadIcon from "../../assets/UploadIcon.png";
+import { motion } from "framer-motion";
 
 const UploadFile = () => {
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, x: 600 }}
+      animate={{ opacity: 3, x: 0 }}
+      transition={{ duration: 1.5 }}
+    >
       <h3 className="text-[#1A1A1F] text-sm font-medium leading-5 mb-2">
         ატვირთეთ ფოტო
       </h3>
       <div
         className="w-full bg-[#F4F3FF] py-12 flex justify-center
-      items-center flex-col space-y-6 border border-#85858D border-dashed rounded-xl"
+        items-center flex-col space-y-6 border border-#85858D border-dashed rounded-xl"
       >
         <img src={UploadIcon} alt="UploadIcon" />
         <p className="text-[#1A1A1F] text-sm leading-5">
@@ -22,7 +27,7 @@ const UploadFile = () => {
           />
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
