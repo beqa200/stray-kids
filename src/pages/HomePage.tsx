@@ -9,7 +9,7 @@ const HomePage = () => {
         context.darkLight
           ? " bg-[#F3F2FA] text-[#1A1A1F]"
           : "bg-[#0e101cf8] text-[#FFF]"
-      }   flex flex-col items-center  justify-around  w-full`}
+      }   flex flex-col items-center  justify-around pt-[64px] w-full`}
     >
       <div className=" flex flex-col items-center justify-center gap-16 w-full md:flex-row md:justify-between md:pl-10 xl:pl-[76px] mt-[64px]">
         <img

@@ -1,5 +1,7 @@
 import { useUserContext } from "../context";
-
+import { FaSquareInstagram } from "react-icons/fa6";
+import { FaFacebook } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
 export default function Footer() {
   const context = useUserContext();
   return (
@@ -7,7 +9,7 @@ export default function Footer() {
       className={`   ${
         context.darkLight
           ? " bg-[#fff] text-[#1A1A1F] border-[#E4E3EB]"
-          : "bg-[#0e101c] text-[#FFF] border-[#404049]"
+          : "bg-[rgb(14,16,28)] text-[#85858D] border-[#404049]"
       } flex flex-col items-start justify-between  w-full  gap-7  border-t border-solid  py-5 px-5 md:px-10 xl:px-[76px] `}
     >
       <img
@@ -19,7 +21,7 @@ export default function Footer() {
         }`}
         alt=""
       />
-      <p>
+      <p className="w-full md:pr-[200px]">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora
         maiores provident molestiae quisquam odit illo suscipit asperiores
         possimus tenetur nihil fugit, veniam assumenda iste laboriosam. Impedit
@@ -27,9 +29,11 @@ export default function Footer() {
       </p>
       <div className="w-full flex flex-row items-center justify-between">
         {" "}
-        <p>beqa</p>
-        <div className=" flex flex-row items-center justify-center gap-2">
-          <p>faust</p> <p>lazare</p> <p>logo</p>
+        <p className=" text-[14px] leading-6 font-bold ">
+          Copyright 2024. All Rights Reserved
+        </p>
+        <div className=" flex flex-row items-center justify-center gap-2 md:gap-8">
+          <FaFacebook /> <FaSquareInstagram /> <FaTwitter />
         </div>
       </div>
     </div>

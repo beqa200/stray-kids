@@ -20,11 +20,14 @@ export type MyContextProps = {
   setFindFont: (value: string) => void;
   fontMenu: boolean;
   setFontMenu: (value: boolean) => void;
+  singUp: boolean;
+  setSingUp: (value: boolean) => void;
 };
 
 function App() {
   const [darkLight, setDarkLight] = useState<boolean>(true);
   const [login, setLogin] = useState<boolean>(false);
+  const [singUp, setSingUp] = useState<boolean>(false);
   const [findFont, setFindFont] = useState<string>("გრიგოლია");
   const [fontMenu, setFontMenu] = useState<boolean>(false);
 
@@ -32,6 +35,18 @@ function App() {
     document.body.style.fontFamily = findFont;
   }, [findFont]);
 
+  useEffect(() => {
+    const body = document.body;
+    if (darkLight) {
+      body.style.background = "#F3F2FA";
+    } else {
+      body.style.background = "#0e101cf8";
+    }
+  }, [darkLight]);
+
+  useEffect(() => {
+    document.body.style.overflow = login || singUp ? "hidden" : "auto";
+  }, [login, singUp]);
   return (
     <MyContext.Provider
       value={{
@@ -43,12 +58,14 @@ function App() {
         setFindFont,
         fontMenu,
         setFontMenu,
+        singUp,
+        setSingUp,
       }}
     >
       <ScrollToTop />
       <Header />
       {login ? <Login /> : ""}
-      {/* <SignUp /> */}
+      {singUp ? <SignUp /> : ""}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/:id" element={<SingleBlog />} />

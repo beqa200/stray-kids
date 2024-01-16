@@ -12,13 +12,13 @@ export default function Login() {
   const onSubmit = () => {};
 
   return (
-    <div className="flex flex-col items-center justify-center ">
+    <div className="flex flex-col items-center justify-center overflow-hidden">
       <div
         className={`  ${
           context.darkLight
-            ? " bg-[#fff] text-[#1A1A1F]"
-            : "bg-[#0e101c] text-[#FFF]"
-        } absolute  top-52 w-[335px] py-10 rounded-xl flex flex-col items-center justify-center z-20  md:w-[480px]`}
+            ? " bg-[#fff] text-[#1A1A1F] shadow-[0px_5px_30px_0px_#00000019] "
+            : "bg-[#0e101c] text-[#FFF] shadow-[0px_5px_30px_0px_#5D37f3] "
+        } absolute  top-52 w-[335px] py-10 rounded-xl flex flex-col items-center justify-center z-30  md:w-[480px]`}
       >
         <div
           onClick={() => {
@@ -53,11 +53,18 @@ export default function Login() {
           <div className="flex flex-row items-center justify-center gap-3 mt-4 w-full text-[14px] md:text-[16px]">
             {" "}
             <p>Don’t have an account?</p>{" "}
-            <p className=" text-[#5D37F3] ">Sign Up</p>
+            <p
+              onClick={() => {
+                context.setSingUp(true), context.setLogin(false);
+              }}
+              className=" text-[#5D37F3] "
+            >
+              Sign Up
+            </p>
           </div>
         </form>
       </div>
-      <div className=" w-full h-full opacity-[0.24] bg-black absolute top-0  right-0 z-0 ">
+      <div className=" w-full h-full opacity-[0.24] bg-black absolute top-0  right-0 z-20 ">
         {" "}
       </div>
     </div>

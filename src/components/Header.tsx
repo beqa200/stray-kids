@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 export default function Header() {
   const context = useUserContext();
 
-  const [scrollOpacity, setScrollOpacity] = useState<any>(0.0);
+  const [scroll, setScroll] = useState<any>(0.0);
 
   const handleScroll = () => {
     const scrollPosition = window.scrollY;
     const maxScroll = 300;
-    const opacity = Math.min(scrollPosition / maxScroll, 0.75);
-    setScrollOpacity(opacity);
+    const opacity = Math.min(scrollPosition / maxScroll, 0.5);
+    setScroll(opacity);
   };
 
   useEffect(() => {
@@ -21,9 +21,10 @@ export default function Header() {
   }, []);
   const headerStyle = {
     backgroundColor: context.darkLight
-      ? `rgba(255, 255, 255, ${1 - scrollOpacity})`
-      : `rgba(0, 0, 0, ${1 - scrollOpacity})`,
+      ? `rgba(255, 255, 255, ${1 - scroll})`
+      : `rgba(14, 16, 28, ${1 - scroll})`,
   };
+
   return (
     <header
       style={headerStyle}
@@ -35,7 +36,7 @@ export default function Header() {
     >
       <div className=" flex flex-row items-center justify-between w-full">
         <img
-          className="w-[80px] md:w-[150px]"
+          className="w-[100px] md:w-[170px]"
           src={` ${
             context.darkLight
               ? " ./assets/LOGO-02 3.png "
@@ -45,7 +46,7 @@ export default function Header() {
         />
 
         <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
-          <div className="flex flex-row items-center justify-between w-[100px] relative">
+          <div className="flex flex-row items-center justify-between md:w-[100px] relative">
             <p
               onClick={() => context.setFontMenu(!context.fontMenu)}
               className="flex flex-row items-center gap-2"
@@ -59,7 +60,7 @@ export default function Header() {
                   context.darkLight
                     ? "bg-[#fff]  shadow-[0px_5px_30px_0px_#00000019]"
                     : "bg-[#0e101c]  shadow-[0px_5px_30px_0px_#5D37f3]"
-                } flex  px-5  py-2.5 flex-col items-center justify-between gap-2  absolute top-12 right-[-110px] md:right-0`}
+                } flex  px-5  py-2.5 flex-col items-start justify-between gap-2  absolute top-12 right-[-110px] md:right-[-10px]`}
               >
                 <p
                   onClick={() => {
