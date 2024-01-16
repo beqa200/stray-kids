@@ -1,14 +1,37 @@
 import { useUserContext } from "../context";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { useEffect, useState } from "react";
 export default function Header() {
   const context = useUserContext();
+
+  const [scrollOpacity, setScrollOpacity] = useState<any>(0.0);
+
+  const handleScroll = () => {
+    const scrollPosition = window.scrollY;
+    const maxScroll = 300;
+    const opacity = Math.min(scrollPosition / maxScroll, 0.75);
+    setScrollOpacity(opacity);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  const headerStyle = {
+    backgroundColor: context.darkLight
+      ? `rgba(255, 255, 255, ${1 - scrollOpacity})`
+      : `rgba(0, 0, 0, ${1 - scrollOpacity})`,
+  };
   return (
     <header
+      style={headerStyle}
       className={` ${
         context.darkLight
-          ? " bg-[#fff] text-[#1A1A1F] border-[#E4E3EB]"
+          ? "  bg-white text-[#1A1A1F] border-[#E4E3EB]"
           : "bg-[#0e101c] text-[#FFF]  border-[#404049]"
-      } flex flex-col items-center justify-between w-full md:h-20 px-5 py-5 md:px-10 xl:px-[76px] border-b border-solid `}
+      } flex flex-col items-center justify-between w-full md:h-20 px-5 py-5 md:px-10 xl:px-[76px] border-b border-solid  fixed top-0 z-10 `}
     >
       <div className=" flex flex-row items-center justify-between w-full">
         <img
@@ -22,7 +45,7 @@ export default function Header() {
         />
 
         <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
-          <div className="flex flex-row items-center justify-between  relative">
+          <div className="flex flex-row items-center justify-between w-[100px] relative">
             <p
               onClick={() => context.setFontMenu(!context.fontMenu)}
               className="flex flex-row items-center gap-2"
