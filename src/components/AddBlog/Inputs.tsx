@@ -81,7 +81,9 @@ const Inputs = () => {
       </div>
       {/*  */}
       <div className="mt-6 flex flex-col space-y-2">
-        <label>ელ-ფოსტა</label>
+        <label className="text-[#1A1A1F] text-sm font-medium leading-5">
+          ელ-ფოსტა
+        </label>
         <input
           type="text"
           placeholder="Example@redberry.ge"
