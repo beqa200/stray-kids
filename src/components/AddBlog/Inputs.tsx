@@ -46,7 +46,7 @@ const Inputs = () => {
 
   const validateEmail = (value: string): boolean | string => {
     if (value.trim() === "") {
-      return true; // Skip validation if the input is empty
+      return true;
     }
 
     const emailRegex = /^[^\s]+@redberry\.ge$/;
