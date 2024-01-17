@@ -46,10 +46,10 @@ export default function Header() {
         />
 
         <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
-          <div className="flex flex-row items-center justify-between md:w-[100px] relative">
+          <div className="flex flex-row items-center justify-between  relative">
             <p
               onClick={() => context.setFontMenu(!context.fontMenu)}
-              className="flex flex-row items-center gap-2"
+              className="flex flex-row items-center gap-2 md:w-[110px]"
             >
               <p className="hidden md:flex">{context.findFont}</p>{" "}
               <MdOutlineKeyboardArrowDown size={20} />
@@ -60,7 +60,7 @@ export default function Header() {
                   context.darkLight
                     ? "bg-[#fff]  shadow-[0px_5px_30px_0px_#00000019]"
                     : "bg-[#0e101c]  shadow-[0px_5px_30px_0px_#5D37f3]"
-                } flex  px-5  py-2.5 flex-col items-start justify-between gap-2  absolute top-12 right-[-110px] md:right-[-10px]`}
+                } flex  px-5  py-2.5 flex-col items-start justify-between gap-2  absolute top-12 right-[-110px] md:right-0 rounded-xl`}
               >
                 <p
                   onClick={() => {

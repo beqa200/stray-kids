@@ -22,17 +22,20 @@ export default function Footer() {
         alt=""
       />
       <p className="w-full md:pr-[200px]">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora
-        maiores provident molestiae quisquam odit illo suscipit asperiores
-        possimus tenetur nihil fugit, veniam assumenda iste laboriosam. Impedit
-        libero explicabo porro tenetur.
+        Redberry-იში თანამშრომლებს ძალიან უყვართ ერთმანეთისთვის ინფორმაციის,
+        ინტერესების, ცოდნის გაზიარება. ამიტომ, მნიშვნელოვანი გახდა ამ
+        ინფორმაციის მიწოდების პროცესის გამარტივება, რასაც გარკვეულწილად
+        უზრუნველყოფს აღნიშნული აპლიკაცია, რომლის შექმნაშიც თქვენ დაეხმარებით
+        რედბერის
       </p>
       <div className="w-full flex flex-row items-center justify-between">
         {" "}
         <p className=" text-[14px] leading-6 font-bold ">
           Copyright 2024. All Rights Reserved
         </p>
-        <div className=" flex flex-row items-center justify-center gap-2 md:gap-8">
+        <div
+          className={`flex flex-row items-center justify-center gap-2 md:gap-8`}
+        >
           <FaFacebook /> <FaSquareInstagram /> <FaTwitter />
         </div>
       </div>
