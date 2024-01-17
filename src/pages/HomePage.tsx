@@ -2,18 +2,55 @@ import { MdOutlineArrowOutward } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../context";
 import data from "../../data.json";
+import { useState } from "react";
 const HomePage = () => {
   const context = useUserContext();
+  const [btn, setBtn] = useState([
+    {
+      id: 1,
+      text: "მარკეტი",
+      bg: "rgba(255, 184, 47, 0.08)",
+      color: "#D6961C",
+    },
+    {
+      id: 2,
+      text: "აპლიკაცია",
+      bg: "rgba(28, 214, 125, 0.08)",
+      color: "#15C972",
+    },
+    {
+      id: 3,
+      text: "ხელოვნური ინტელექტი",
+      bg: "rgba(177, 28, 214, 0.08)",
+      color: "#B71FDD",
+    },
+    {
+      id: 1,
+      text: "UI/UX",
+      bg: "rgba(250, 87, 87, 0.08)",
+      color: "#DC2828",
+    },
+    {
+      id: 1,
+      text: "კვლევა",
+      bg: "rgba(112, 207, 37, 0.08)",
+      color: "#60BE16",
+    },
+    {
+      id: 1,
+      text: "Figma",
+      bg: "rgba(8, 210, 174, 0.08)",
+      color: "#1AC7A8",
+    },
+  ]);
 
   return (
     <div
       className={` ${
-        context.darkLight
-          ? " bg-[#F3F2FA] text-[#1A1A1F]"
-          : "bg-[#0e101cf8] text-[#FFF]"
-      }   flex flex-col items-center  justify-around gap-16 pt-[64px] w-full`}
+        context.darkLight ? "  text-[#1A1A1F]" : " text-[#FFF]"
+      }   flex flex-col items-center  justify-around gap-16 pt-[64px] w-full xl:w-[1288px]`}
     >
-      <div className=" flex flex-col items-center justify-center  w-full md:flex-row md:justify-between md:pl-10 xl:pl-[76px] mt-[64px] ">
+      <div className=" flex flex-col items-center justify-center  w-full md:flex-row md:justify-between md:pl-10 xl:pl-[0] mt-[64px] ">
         <img
           className=" w-[424px] lg:w-full pl-5 md:pl-10 xl:pl-[76px] md:order-2"
           src="./assets/Blog-1024x355 1.png"
@@ -23,13 +60,24 @@ const HomePage = () => {
           ბლოგი
         </h1>
       </div>
+      <div className="flex flex-row  flex-wrap px-5 md:px-10 items-center justify-between  gap-6">
+        {btn.map((item: any) => (
+          <button
+            key={item.id}
+            style={{ background: item.bg, color: item.color }}
+            className=" py-2  px-4  rounded-[30px]"
+          >
+            {item.text}
+          </button>
+        ))}
+      </div>
       <div
         className="flex flex-wrap  items-center justify-center gap-2 md:gap-5 xl:gap-8 md:items-start 
       "
       >
         {data.map((item: any) => (
           <div key={item.id}>
-            <section className=" w-[340px] flex flex-wrap  items-center justify-center    gap-14">
+            <section className=" w-[340px] flex flex-wrap  items-center justify-center xl:w-[408px]   gap-14">
               <div className="flex flex-col gap-6">
                 <img
                   className=" w-[340px]  rounded-xl bg-teal-500 xl:w-[408px]"
@@ -69,7 +117,7 @@ const HomePage = () => {
                   </p>
                   <Link
                     to={"/:id"}
-                    className="text-[#5D37F3] text-[14px]  font-medium leading-5 flex flex-row items-center justify-center  mt-4 "
+                    className="text-[#5D37F3] text-[14px]  font-medium leading-5 flex flex-row items-center justify-center  mt-4 mb-[56px]"
                   >
                     სრულად ნახვა <MdOutlineArrowOutward size={18} />
                   </Link>
