@@ -1,10 +1,9 @@
-
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AddBlog from "./pages/AddBlog";
 import SingleBlog from "./pages/SingleBlog";
 import ErrorPage from "./pages/ErrorPage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import { MyContext } from "./context";
 import ScrollToTop from "./utils/ScrollOnTop";
@@ -17,11 +16,37 @@ export type MyContextProps = {
   setDarkLight: (value: boolean) => void;
   login: boolean;
   setLogin: (value: boolean) => void;
+  findFont: string;
+  setFindFont: (value: string) => void;
+  fontMenu: boolean;
+  setFontMenu: (value: boolean) => void;
+  singUp: boolean;
+  setSingUp: (value: boolean) => void;
 };
 
 function App() {
   const [darkLight, setDarkLight] = useState<boolean>(true);
   const [login, setLogin] = useState<boolean>(false);
+  const [singUp, setSingUp] = useState<boolean>(false);
+  const [findFont, setFindFont] = useState<string>("გრიგოლია");
+  const [fontMenu, setFontMenu] = useState<boolean>(false);
+
+  useEffect(() => {
+    document.body.style.fontFamily = findFont;
+  }, [findFont]);
+
+  useEffect(() => {
+    const body = document.body;
+    if (darkLight) {
+      body.style.background = "#F3F2FA";
+    } else {
+      body.style.background = "#0e101cf8";
+    }
+  }, [darkLight]);
+
+  useEffect(() => {
+    document.body.style.overflow = login || singUp ? "hidden" : "auto";
+  }, [login, singUp]);
   return (
     <MyContext.Provider
       value={{
@@ -29,12 +54,18 @@ function App() {
         setDarkLight,
         login,
         setLogin,
+        findFont,
+        setFindFont,
+        fontMenu,
+        setFontMenu,
+        singUp,
+        setSingUp,
       }}
     >
-      {/* <ScrollToTop /> */}
+      <ScrollToTop />
       <Header />
       {login ? <Login /> : ""}
-      {/* <SignUp /> */}
+      {singUp ? <SignUp /> : ""}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/:id" element={<SingleBlog />} />
