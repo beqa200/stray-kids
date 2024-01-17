@@ -15,14 +15,24 @@ const Inputs = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValidating },
     watch,
+    formState: { errors },
   } = useForm<InputsForm>();
 
   const onSubmit = (data: FieldValues) => {
-    console.log("Errors:", errors);
     console.log("Data:", data);
   };
+
+  console.log("Errors:", errors.author);
+  // console.log(watch("author"));
+
+  const titleWatch = watch("title", "");
+  const descriptionWatch = watch("description", "");
+  const dateWatch = watch("date", "");
+  const emailWatch = watch("email", "");
+  const authorWatch = watch("author", "");
+
+  console.log(authorWatch);
 
   const validateGeorgianWords = (value: string): boolean => {
     const georgianRegex = /^[\u10A0-\u10FF\s]+$/;
@@ -30,19 +40,18 @@ const Inputs = () => {
   };
 
   const validateAtLeastTwoWords = (value: string): boolean => {
-    const words = value.split(/\s+/);
+    const words = value.trim().split(/\s+/);
     return words.length >= 2;
   };
 
-  const validateEmail = (value: string): boolean => {
-    const emailRegex = /^[^\s]+@redberry\.ge$/;
-    return emailRegex.test(value);
-  };
+  const validateEmail = (value: string): boolean | string => {
+    if (value.trim() === "") {
+      return true; // Skip validation if the input is empty
+    }
 
-  const titleValue = watch("title");
-  const descriptionValue = watch("description");
-  const dateValue = watch("date");
-  const emailValue = watch("email");
+    const emailRegex = /^[^\s]+@redberry\.ge$/;
+    return emailRegex.test(value) || "Email should end with redberry.ge";
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,16 +84,52 @@ const Inputs = () => {
                   },
                 })}
                 type="text"
-                className={`${
-                  errors.author ? "border-[#EA1919]" : "border-[#E4E3EB]"
-                } w-[288px] mb-2 py-3 pl-4 border border-[#E4E3EB] bg-[#FCFCFD] rounded-xl
+                className={` ${
+                  errors.author && "border-[#EA1919] hover:border-[#EA1919]"
+                } ${
+                  (errors.author && authorWatch.length < 4) ||
+                  (errors.author && authorWatch.split(/\s+/).length <= 2) ||
+                  !validateGeorgianWords(authorWatch)
+                    ? "border-[#E4E3EB] hover-border-[#E4E3EB]"
+                    : ""
+                }${
+                  !errors.author && "border-[#14D81C] "
+                }  w-[288px] mb-2 py-3 pl-4 border border-[#E4E3EB] bg-[#FCFCFD] rounded-xl
             hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
                 placeholder="შეიყვანეთ ავტორი"
               />
               <div className="text-xs leading-5 text-[#85858D] ml-4">
-                <li>minimum 4 symbols</li>
-                <li>minimum 2 words</li>
-                <li>only Georgian words</li>
+                <li
+                  className={`${
+                    errors.author && authorWatch.length < 4
+                      ? "text-red-700"
+                      : ""
+                  } ${authorWatch.length >= 4 && "text-[#14D81C]"}`}
+                >
+                  მინიმუმ 4 სიმბოლო
+                </li>
+                <li
+                  className={`${
+                    errors.author && authorWatch.split(/\s+/).length <= 2
+                      ? "text-red-700"
+                      : ""
+                  } ${
+                    authorWatch.split(/\s+/).length >= 2 && "text-[#14D81C]"
+                  }`}
+                >
+                  მინიმუმ ორი სიტყვა
+                </li>
+                <li
+                  className={`${
+                    validateGeorgianWords(authorWatch)
+                      ? "text-[#14D81C]"
+                      : errors.author
+                      ? "text-[#EA1919]"
+                      : "text-[#85858D]"
+                  }`}
+                >
+                  მხოლოდ ქართული სიმბოლოები
+                </li>
               </div>
             </div>
             {/* სათაური */}
@@ -101,24 +146,19 @@ const Inputs = () => {
                   },
                 })}
                 className={`${
-                  errors.title ? "border-[#EA1919]" : "border-[#E4E3EB]"
+                  errors.title && "border-[#EA1919] hover:border-[#EA1919]"
                 } ${
-                  titleValue && !isValidating
-                    ? "border-green-600"
-                    : "border-[#E4E3EB]"
+                  titleWatch.length >= 2 &&
+                  "border-[#14D81C] hover:border-[#14D81C]"
                 } w-[288px] mb-2 py-3 pl-4 border  bg-[#FCFCFD] rounded-xl
             hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
                 type="text"
                 placeholder="შეიყვანეთ სათაური"
               />
               <li
-                className={`${
-                  errors.title
-                    ? "text-red-600"
-                    : titleValue && !isValidating
-                    ? "text-green-600"
-                    : "text-gray-600"
-                } text-xs leading-5 ml-4`}
+                className={`${errors.title && "text-red-600"} ${
+                  titleWatch.length >= 2 && "text-[#14D81C]"
+                } text-[#85858D] text-xs leading-5 ml-4`}
               >
                 მინიმუმ 2 სიმბოლო
               </li>
@@ -144,25 +184,22 @@ const Inputs = () => {
                 },
               })}
               className={`${
-                errors.description ? "border-[#EA1919]" : "border-[#14D81C]"
+                errors.description && "border-red-600 hover:border-red-600"
               } ${
-                descriptionValue && !isValidating
-                  ? "border-[#14D81C]"
-                  : "border-[#E4E3EB]"
+                descriptionWatch.length >= 2 &&
+                "border-[#14D81C] hover:border-[#14D81C]"
               } min-h-[124px]  bg-[#FCFCFD] border rounded-xl pt-3 pl-4
           hover:border-[#5D37F3] hover:border-[1.5px] outline-none w-[300px] md:w-full`}
               placeholder="შეიყვანეთ აღწერა"
             ></textarea>
-            <li
-              className={`${
-                errors.description
-                  ? "text-red-600"
-                  : descriptionValue && !isValidating
-                  ? "text-green-600"
-                  : "text-gray-600"
-              } text-xs leading-5`}
-            >
-              <span>მინიმუმ 2 სიმბოლო</span>
+            <li className={`text-xs leading-5 text-[#85858D]`}>
+              <span
+                className={`${errors.description && "text-red-600"} ${
+                  descriptionWatch.length >= 2 ? "text-[#14D81C]" : ""
+                }`}
+              >
+                მინიმუმ 2 სიმბოლო
+              </span>
             </li>
           </div>
         </motion.div>
@@ -183,13 +220,11 @@ const Inputs = () => {
                 })}
                 type="date"
                 className={`${
-                  errors.date ? "border-[#EA1919]" : "border-[#14D81C]"
+                  errors.date && "border-[#EA1919] hover:border-[#EA1919]"
+                } ${
+                  dateWatch && "border-[#14D81C] hover:border-[#14D81C]"
                 } w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
-            hover:border-[#5D37F3] hover:border-[1.5px] outline-none ${
-              dateValue && !isValidating
-                ? "border-green-600"
-                : "border-[#E4E3EB]"
-            }`}
+            hover:border-[#5D37F3] hover:border-[1.5px] outline-none `}
               />
             </div>
           </motion.div>
@@ -224,23 +259,24 @@ const Inputs = () => {
             </label>
             <input
               {...register("email", {
-                required: "Email is required",
-                validate: (value) =>
-                  validateEmail(value) || "Email should end with redberry.ge",
+                required: false,
+                validate: validateEmail,
               })}
               type="text"
               placeholder="Example@redberry.ge"
               className={`${
-                errors.email ? "border-[#EA1919]" : "border-[#14D81C]"
+                emailWatch.length > 0 && !emailWatch.includes("redberry.ge")
+                  ? "border-red-600 hover:border-red-600"
+                  : ""
               } ${
-                emailValue && !isValidating
-                  ? "border-[#14D81C]"
-                  : "border-[#E4E3EB]"
+                emailWatch.includes("@redberry.ge")
+                  ? "border-green-700 hover:border-green-700"
+                  : ""
               } w-[288px] py-3 px-4 rounded-xl border bg-[#FCFCFD]
   hover:border-[#5D37F3] hover:border-[1.5px] outline-none `}
             />
           </div>
-          {errors.email ? (
+          {emailWatch.length > 0 && !emailWatch.includes("redberry.ge") ? (
             <div className="flex flex-row gap-x-2 mt-2">
               <img src={errorIcon} alt="errorIcon" />
               <span className="text-[#EA1919] text-xs leading-5">
@@ -258,7 +294,12 @@ const Inputs = () => {
           <div className="my-10 flex justify-end">
             <button
               type="submit"
-              className=" text-white text-sm font-medium leading-5 py-[10px] w-[288px] bg-[#5D37F3] rounded-lg"
+              disabled={Object.keys(errors).length > 0}
+              className={`${
+                Object.keys(errors).length > 0
+                  ? "bg-[#E4E3EB] hover:shadow-none"
+                  : "bg-[#5D37F3]"
+              } text-white text-sm font-medium leading-5 py-[10px] w-[288px] rounded-lg hover:shadow-2xl transition-all duration-500`}
             >
               გამოქვეყნება
             </button>

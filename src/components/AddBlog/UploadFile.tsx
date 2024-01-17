@@ -20,10 +20,8 @@ const UploadFile = () => {
           ჩააგდეთ ფაილი აქ ან
           <input
             type="file"
-            id="fileInput"
             className="custom-file-input w-[120px] pl-1 font-medium"
             name="picture"
-            value=""
           />
         </p>
       </div>
