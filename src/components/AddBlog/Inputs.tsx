@@ -55,7 +55,7 @@ const Inputs = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="mt-6 flex flex-col p-4">
+      <div className="mt-6 flex flex-col">
         <motion.div
           initial={{ opacity: 0, x: -300 }}
           animate={{ opacity: 3, x: 0 }}
@@ -204,7 +204,7 @@ const Inputs = () => {
           </div>
         </motion.div>
         {/*  */}
-        <div className="mt-6 flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between space-x-2">
+        <div className="mt-6 flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between space-x-0 md:space-x-2 ">
           <motion.div
             initial={{ opacity: 0, x: -300 }}
             animate={{ opacity: 3, x: 0 }}
