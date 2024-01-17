@@ -1,6 +1,9 @@
 import { type FieldValues, useForm } from "react-hook-form";
 import errorIcon from "../../assets/errorIcon.svg";
 import { motion } from "framer-motion";
+import { FaChevronDown } from "react-icons/fa6";
+import { useState } from "react";
+import Category from "./Category";
 
 interface InputsForm {
   author: string;
@@ -11,7 +14,48 @@ interface InputsForm {
   email: string;
 }
 
+const categoryArray = [
+  {
+    id: 1,
+    name: "მარკეტი",
+    color: "#D6961C",
+    bgColor: "rgba(255, 184, 47, 0.08)",
+  },
+  {
+    id: 2,
+    name: "აპლიკაცია",
+    color: "#15C972",
+    bgColor: "rgba(28, 214, 125, 0.08)",
+  },
+  {
+    id: 3,
+    name: "ხელოვნური ინტელექტი",
+    color: "#B71FDD",
+    bgColor: "#EEE1F7",
+  },
+  {
+    id: 4,
+    name: "UI/UX",
+    color: "#DC2828",
+    bgColor: "rgba(250, 87, 87, 0.08)",
+  },
+  {
+    id: 5,
+    name: "კვლევა",
+    color: "#60BE16",
+    bgColor: "#E9EFE9",
+  },
+  {
+    id: 6,
+    name: "Figma",
+    color: "#1AC7A8",
+    bgColor: "rgba(8, 210, 174, 0.08)",
+  },
+];
+
 const Inputs = () => {
+  const [categoryMenu, setCategoryMenu] = useState<boolean>(false);
+
   const {
     register,
     handleSubmit,
@@ -237,13 +281,23 @@ const Inputs = () => {
               <label className="text-[#1A1A1F] text-sm font-medium leading-5">
                 კატეგორია *
               </label>
-              <input
-                {...register("category")}
-                type="text"
-                placeholder="აირჩიეთ კატეგორია"
-                className="w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
-              hover:border-[#5D37F3] hover:border-[1.5px] outline-none"
-              />
+              <div
+                onClick={() => setCategoryMenu(!categoryMenu)}
+                className="relative"
+              >
+                <input
+                  {...register("category")}
+                  type="text"
+                  value={""}
+                  placeholder="აირჩიეთ კატეგორია"
+                  className="w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
+    hover:border-[#5D37F3] hover:border-[1.5px] outline-none"
+                />
+                <span className="absolute right-7 md:right-4 top-1/2 transform -translate-y-1/2 cursor-pointer">
+                  <FaChevronDown />
+                </span>
+              </div>
+              {categoryMenu && <Category categoryArray={categoryArray} />}
             </div>
           </motion.div>
         </div>
