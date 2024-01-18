@@ -9,6 +9,7 @@ const HomePage = () => {
   const [findButton, setFindButton] = useState<any>(null);
 
   const [btn] = useState<any>([
+    { id: 0, text: "all", bg: "rgb(133, 133, 141, 0.08 )", color: "#85858D" },
     {
       id: 1,
       text: "მარკეტი",
@@ -48,7 +49,7 @@ const HomePage = () => {
   ]);
   const filterData = findButton
     ? data.filter((item) =>
-        item.button.some((button) => button.text === findButton)
+        item.button.find((button) => button.text === findButton)
       )
     : data;
   // unda davumatot all buttoni unda vikitxo
@@ -60,7 +61,7 @@ const HomePage = () => {
     >
       <div className=" flex flex-col items-center justify-center  w-full md:flex-row md:justify-between md:pl-10 xl:pl-[0] mt-[64px] ">
         <img
-          className=" w-[424px] lg:w-full pl-5 md:pl-10 xl:pl-[76px] md:order-2"
+          className=" md:h-[200px] md:w-[500px]  pl-5 md:pl-10 xl:pl-[76px] md:order-2"
           src="./assets/Blog-1024x355 1.png"
           alt=""
         />
