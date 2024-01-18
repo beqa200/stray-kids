@@ -34,7 +34,7 @@ export default function Header() {
           : "bg-[#0e101c] text-[#FFF]  border-[#404049]"
       } flex flex-col items-center justify-between w-full md:h-20 px-5 py-5 md:px-10 xl:px-[76px] border-b border-solid  fixed top-0 z-10 `}
     >
-      <div className=" flex flex-row items-center justify-between w-full">
+      <div className=" flex flex-row items-center justify-between w-full xl:w-[1288px]">
         <img
           className="w-[100px] md:w-[170px]"
           src={` ${
