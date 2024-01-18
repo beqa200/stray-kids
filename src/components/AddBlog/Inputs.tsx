@@ -1,7 +1,9 @@
 import { type FieldValues, useForm } from "react-hook-form";
 import errorIcon from "../../assets/errorIcon.svg";
+import UploadIcon from "../../assets/UploadIcon.png";
 import { motion } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa6";
+import { FaChevronUp } from "react-icons/fa6";
 import { useState } from "react";
 import Category from "./Category";
 
@@ -12,6 +14,7 @@ interface InputsForm {
   date: string;
   category: string;
   email: string;
+  image: string;
 }
 
 const categoryArray = [
@@ -55,28 +58,38 @@ const categoryArray = [
 
 const Inputs = () => {
   const [categoryMenu, setCategoryMenu] = useState<boolean>(false);
+  // const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<InputsForm>();
 
-  const onSubmit = (data: FieldValues) => {
-    console.log("Data:", data);
+  const onSubmit = async (data: FieldValues) => {
+    const selectedFile = data.image?.[0];
+
+    if (selectedFile) {
+      console.log("Selected file:", selectedFile);
+      setImage(URL.createObjectURL(selectedFile));
+    } else {
+      console.error("No file selected");
+    }
+    console.log("Form Data:", data);
   };
 
-  console.log("Errors:", errors.author);
-  // console.log(watch("author"));
+  console.log(errors.image);
 
   const titleWatch = watch("title", "");
   const descriptionWatch = watch("description", "");
   const dateWatch = watch("date", "");
   const emailWatch = watch("email", "");
   const authorWatch = watch("author", "");
+  const imageWatch = watch("image", "");
 
-  console.log(authorWatch);
+  console.log(imageWatch);
 
   const validateGeorgianWords = (value: string): boolean => {
     const georgianRegex = /^[\u10A0-\u10FF\s]+$/;
@@ -84,7 +97,7 @@ const Inputs = () => {
   };
 
   const validateAtLeastTwoWords = (value: string): boolean => {
-    const words = value.trim().split(/\s+/);
+    const words = value.split(/\s+/);
     return words.length >= 2;
   };
 
@@ -97,8 +110,65 @@ const Inputs = () => {
     return emailRegex.test(value) || "Email should end with redberry.ge";
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+
+    if (selectedFile) {
+      setImage(URL.createObjectURL(selectedFile));
+    } else {
+      setImage(null); // Reset image if no file is selected
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      <motion.div
+        initial={{ opacity: 0, x: 600 }}
+        animate={{ opacity: 3, x: 0 }}
+        transition={{ duration: 1.5 }}
+      >
+        {image !== null && (
+          <img
+            src={image}
+            alt="Selected Image"
+            className="max-h-60 rounded-lg"
+          />
+        )}
+        <h3 className="text-[#1A1A1F] text-sm font-medium leading-5 mb-2">
+          ატვირთეთ ფოტო
+        </h3>
+        <div
+          className={`${
+            !image && errors.image ? "border-red-500" : "border-gray-600"
+          }  w-full bg-[#F4F3FF] py-12 flex justify-center
+    items-center flex-col space-y-6 border border-dashed rounded-xl`}
+        >
+          {image ? (
+            <img
+              src={image}
+              alt="Selected Image"
+              className="max-h-60 rounded-lg"
+            />
+          ) : (
+            <>
+              <img src={UploadIcon} alt="UploadIcon" />
+              <p className="text-[#1A1A1F] text-sm leading-5">
+                ჩააგდეთ ფაილი აქ ან
+                <input
+                  {...register("image", {
+                    required: true,
+                  })}
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  type="file"
+                  className={`custom-file-input pl-1 font-medium`}
+                  name="image"
+                />
+              </p>
+            </>
+          )}
+        </div>
+      </motion.div>
       <div className="mt-6 flex flex-col">
         <motion.div
           initial={{ opacity: 0, x: -300 }}
@@ -129,15 +199,17 @@ const Inputs = () => {
                 })}
                 type="text"
                 className={` ${
-                  errors.author && "border-[#EA1919] hover:border-[#EA1919]"
-                } ${
+                  errors.author
+                    ? "border-[#EA1919] hover:border-[#EA1919]"
+                    : "border border-[#14D81C]"
+                }  ${
                   (errors.author && authorWatch.length < 4) ||
-                  (errors.author && authorWatch.split(/\s+/).length <= 2) ||
+                  errors.author ||
                   !validateGeorgianWords(authorWatch)
-                    ? "border-[#E4E3EB] hover-border-[#E4E3EB]"
+                    ? "border-[#14D81C] hover-border-[#14D81C]"
                     : ""
                 }${
-                  !errors.author && "border-[#14D81C] "
+                  !errors.author && "border-green-600 "
                 }  w-[288px] mb-2 py-3 pl-4 border border-[#E4E3EB] bg-[#FCFCFD] rounded-xl
             hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
                 placeholder="შეიყვანეთ ავტორი"
@@ -154,7 +226,7 @@ const Inputs = () => {
                 </li>
                 <li
                   className={`${
-                    errors.author && authorWatch.split(/\s+/).length <= 2
+                    errors.author && authorWatch.split(/\s+/).length <= 1
                       ? "text-red-700"
                       : ""
                   } ${
@@ -201,7 +273,7 @@ const Inputs = () => {
               />
               <li
                 className={`${errors.title && "text-red-600"} ${
-                  titleWatch.length >= 2 && "text-[#14D81C]"
+                  titleWatch.length >= 2 && "text-green-600"
                 } text-[#85858D] text-xs leading-5 ml-4`}
               >
                 მინიმუმ 2 სიმბოლო
@@ -266,7 +338,7 @@ const Inputs = () => {
                 className={`${
                   errors.date && "border-[#EA1919] hover:border-[#EA1919]"
                 } ${
-                  dateWatch && "border-[#14D81C] hover:border-[#14D81C]"
+                  dateWatch && "border-green-600 hover:border-green-600"
                 } w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
             hover:border-[#5D37F3] hover:border-[1.5px] outline-none `}
               />
@@ -290,11 +362,11 @@ const Inputs = () => {
                   type="text"
                   value={""}
                   placeholder="აირჩიეთ კატეგორია"
-                  className="w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
+                  className="cursor-pointer w-[288px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
     hover:border-[#5D37F3] hover:border-[1.5px] outline-none"
                 />
                 <span className="absolute right-7 md:right-4 top-1/2 transform -translate-y-1/2 cursor-pointer">
-                  <FaChevronDown />
+                  {categoryMenu ? <FaChevronUp /> : <FaChevronDown />}
                 </span>
               </div>
               {categoryMenu && <Category categoryArray={categoryArray} />}
@@ -318,7 +390,7 @@ const Inputs = () => {
               })}
               type="text"
               placeholder="Example@redberry.ge"
-              className={`${
+              className={`
                 emailWatch.length > 0 && !emailWatch.includes("redberry.ge")
                   ? "border-red-600 hover:border-red-600"
                   : ""
