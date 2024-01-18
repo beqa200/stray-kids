@@ -6,10 +6,8 @@ import { useState } from "react";
 const HomePage = () => {
   const context = useUserContext();
 
-  const [findButton, setFindButton] = useState<any>(null);
-
-  const [btn] = useState<any>([
-    { id: 0, text: "all", bg: "rgb(133, 133, 141, 0.08 )", color: "#85858D" },
+  const [findButton, setFindButton] = useState<string[]>([]);
+  const btn = [
     {
       id: 1,
       text: "მარკეტი",
@@ -46,12 +44,27 @@ const HomePage = () => {
       bg: "rgba(8, 210, 174, 0.08)",
       color: "#1AC7A8",
     },
-  ]);
-  const filterData = findButton
+  ];
+
+  const handleButtonClick = (clickedButton: string) => {
+    if (findButton.includes(clickedButton)) {
+      setFindButton(findButton.filter((button) => button !== clickedButton));
+    } else {
+      setFindButton([...findButton, clickedButton]);
+    }
+  };
+
+  const filterData = findButton.length
     ? data.filter((item) =>
-        item.button.find((button) => button.text === findButton)
+        item.button.some((button) => findButton.includes(button.text))
       )
     : data;
+
+  // const filterData = findButton
+  //   ? data.filter((item) =>
+  //       item.button.find((button) => button.text === findButton)
+  //     )
+  //   : data;
   // unda davumatot all buttoni unda vikitxo
   return (
     <div
@@ -72,9 +85,15 @@ const HomePage = () => {
       <div className="flex flex-row  flex-wrap px-5 md:px-10 items-center justify-between  gap-6">
         {btn.map((item: any) => (
           <button
-            onClick={() => setFindButton(item.text)}
+            onClick={() => handleButtonClick(item.text)}
             key={item.id}
-            style={{ background: item.bg, color: item.color }}
+            style={{
+              background: item.bg,
+              color: item.color,
+              outline: findButton.includes(item.text)
+                ? "1px solid #85858D"
+                : "none",
+            }}
             className={`  py-2  px-4  rounded-[30px]`}
           >
             {item.text}
