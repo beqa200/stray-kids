@@ -5,7 +5,10 @@ import data from "../../data.json";
 import { useState } from "react";
 const HomePage = () => {
   const context = useUserContext();
-  const [btn, setBtn] = useState([
+
+  const [findButton, setFindButton] = useState<any>(null);
+
+  const [btn] = useState<any>([
     {
       id: 1,
       text: "მარკეტი",
@@ -43,7 +46,12 @@ const HomePage = () => {
       color: "#1AC7A8",
     },
   ]);
-
+  const filterData = findButton
+    ? data.filter((item) =>
+        item.button.some((button) => button.text === findButton)
+      )
+    : data;
+  // unda davumatot all buttoni unda vikitxo
   return (
     <div
       className={` ${
@@ -63,9 +71,10 @@ const HomePage = () => {
       <div className="flex flex-row  flex-wrap px-5 md:px-10 items-center justify-between  gap-6">
         {btn.map((item: any) => (
           <button
+            onClick={() => setFindButton(item.text)}
             key={item.id}
             style={{ background: item.bg, color: item.color }}
-            className=" py-2  px-4  rounded-[30px]"
+            className={`  py-2  px-4  rounded-[30px]`}
           >
             {item.text}
           </button>
@@ -75,7 +84,7 @@ const HomePage = () => {
         className="flex flex-wrap  items-center justify-center gap-2 md:gap-5 xl:gap-8 md:items-start 
       "
       >
-        {data.map((item: any) => (
+        {filterData.map((item: any) => (
           <div key={item.id}>
             <section className=" w-[340px] flex flex-wrap  items-center justify-center xl:w-[408px]   gap-14">
               <div className="flex flex-col gap-6">
@@ -98,13 +107,13 @@ const HomePage = () => {
                   </h2>
 
                   <div className="flex flex-wrap items-start justify-start h-[28px]">
-                    {item.button.map((index: any) => (
+                    {item.button.map((button: any) => (
                       <button
-                        key={index}
-                        className={`text-[12px] font-medium leading-4 px-2.5 py-1.5 rounded-[30px] `}
-                        style={{ marginRight: "8px" }}
+                        key={button.id}
+                        className={` text-[12px] font-medium leading-4 px-2.5 py-1.5 mr-2 rounded-[30px]`}
+                        style={{ background: button.bg, color: button.color }}
                       >
-                        {index}
+                        {button.text}
                       </button>
                     ))}
                   </div>
@@ -116,7 +125,7 @@ const HomePage = () => {
                     {item.text}
                   </p>
                   <Link
-                    to={"/:id"}
+                    to={"/:id" + item.name}
                     className="text-[#5D37F3] text-[14px]  font-medium leading-5 flex flex-row items-center justify-center  mt-4 mb-[56px]"
                   >
                     სრულად ნახვა <MdOutlineArrowOutward size={18} />
