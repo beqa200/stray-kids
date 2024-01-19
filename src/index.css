@@ -21,8 +21,9 @@
   }
 }
 
-/* .custom-file-input::-webkit-file-upload-button {
+.custom-file-input::-webkit-file-upload-button {
   visibility: hidden;
+  display: none;
 }
 
 input[type="file"] {
@@ -34,5 +35,4 @@ input[type="file"]::before {
   color: black;
   text-decoration: underline;
   cursor: pointer;
-} */
-
+}

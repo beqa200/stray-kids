@@ -21,26 +21,26 @@ const categoryArray = [
   {
     id: 1,
     name: "მარკეტი",
-    color: "#D6961C",
-    bgColor: "rgba(255, 184, 47, 0.08)",
+    color: "#FFFFFF",
+    bgColor: "#FFB82F",
   },
   {
     id: 2,
     name: "აპლიკაცია",
-    color: "#15C972",
-    bgColor: "rgba(28, 214, 125, 0.08)",
+    color: "#FFFFFF",
+    bgColor: "#1AC7A8",
   },
   {
     id: 3,
     name: "ხელოვნური ინტელექტი",
-    color: "#B71FDD",
-    bgColor: "#EEE1F7",
+    color: "#FFFFFF",
+    bgColor: "#B71FDD",
   },
   {
     id: 4,
     name: "UI/UX",
     color: "#DC2828",
-    bgColor: "rgba(250, 87, 87, 0.08)",
+    bgColor: "rgba(112, 207, 37, 0.08)",
   },
   {
     id: 5,
@@ -58,38 +58,53 @@ const categoryArray = [
 
 const Inputs = () => {
   const [categoryMenu, setCategoryMenu] = useState<boolean>(false);
-  // const [image, setImage] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
+  const [gift, setGift] = useState<boolean>(false);
+
+  const gifts = [
+    {
+      id: 1,
+      title: "ლაზარესგან",
+      link: "https://www.youtube.com/watch?v=s4pQ5aj6vx8&list=PLDDSw2MiQpC3qpKfxGdbS1DtE5FeY9fWp&index=8",
+    },
+    {
+      id: 2,
+      title: "გიორგისგან",
+      link: "https://www.youtube.com/watch?v=dBDkYofMUs4&list=RDGMEMCMFH2exzjBeE_zAHHJOdxg&index=3",
+    },
+  ];
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    setValue,
+    formState: { errors },
   } = useForm<InputsForm>();
 
-  const onSubmit = async (data: FieldValues) => {
-    const selectedFile = data.image?.[0];
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
 
     if (selectedFile) {
       console.log("Selected file:", selectedFile);
-      setImage(URL.createObjectURL(selectedFile));
+      const imageUrl = URL.createObjectURL(selectedFile);
+      console.log("Image URL:", imageUrl);
+      setImage(imageUrl);
+      setValue("image", imageUrl);
     } else {
       console.error("No file selected");
     }
-    console.log("Form Data:", data);
   };
 
-  console.log(errors.image);
+  const onSubmit = async (data: FieldValues) => {
+    console.log(data);
+  };
 
   const titleWatch = watch("title", "");
   const descriptionWatch = watch("description", "");
   const dateWatch = watch("date", "");
   const emailWatch = watch("email", "");
   const authorWatch = watch("author", "");
-  const imageWatch = watch("image", "");
-
-  console.log(imageWatch);
 
   const validateGeorgianWords = (value: string): boolean => {
     const georgianRegex = /^[\u10A0-\u10FF\s]+$/;
@@ -110,16 +125,6 @@ const Inputs = () => {
     return emailRegex.test(value) || "Email should end with redberry.ge";
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-
-    if (selectedFile) {
-      setImage(URL.createObjectURL(selectedFile));
-    } else {
-      setImage(null); // Reset image if no file is selected
-    }
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
       <motion.div
@@ -127,38 +132,84 @@ const Inputs = () => {
         animate={{ opacity: 3, x: 0 }}
         transition={{ duration: 1.5 }}
       >
-        {image !== null && (
-          <img
-            src={image}
-            alt="Selected Image"
-            className="max-h-60 rounded-lg"
-          />
-        )}
         <h3 className="text-[#1A1A1F] text-sm font-medium leading-5 mb-2">
           ატვირთეთ ფოტო
         </h3>
         <div
           className={`${
             !image && errors.image ? "border-red-500" : "border-gray-600"
-          }  w-full bg-[#F4F3FF] py-12 flex justify-center
-    items-center flex-col space-y-6 border border-dashed rounded-xl`}
+          }  w-full bg-[#F4F3FF] py-12 flex justify-center items-center flex-col space-y-6 border border-dashed rounded-xl`}
         >
           {image ? (
-            <img
-              src={image}
-              alt="Selected Image"
-              className="max-h-60 rounded-lg"
-            />
+            <>
+              <img
+                src={image}
+                alt={`${image} Uploaded`}
+                className="max-h-60 p-4 rounded-[40px] animate-pulse cursor-pointer hover:scale-110 transform transition-all duration-700"
+              />
+              <div className="relative flex flex-row gap-2 px-4">
+                {gift ? null : (
+                  <button
+                    className="bg-[#E4E3EB] p-3 rounded-xl border-[#E4E3EB] hover:scale-110 duration-300"
+                    onClick={() => setImage(null)}
+                  >
+                    აირჩიეთ სხვა სურათი
+                  </button>
+                )}
+                {gift ? (
+                  <button
+                    onClick={() => setGift(false)}
+                    className="bg-red-400 text-white p-3 rounded-xl border-[#E4E3EB] hover:scale-110 duration-300"
+                  >
+                    აღარ მინდა საჩუქარი
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setGift(!gift)}
+                    className="bg-green-400 text-white p-3 rounded-xl border-[#E4E3EB] hover:scale-110 duration-300"
+                  >
+                    აირჩიეთ საჩუქარი
+                  </button>
+                )}
+
+                <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
+                  <div className="flex justify-center items-center">
+                    {gift && (
+                      <div className="flex flex-row gap-10">
+                        {gifts.map((item) => {
+                          return (
+                            <button
+                              className="bg-green-500 text-white p-1 rounded-xl"
+                              key={item.id}
+                            >
+                              <a
+                                href={item.link}
+                                key={item.id}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() =>
+                                  console.log("Link clicked:", item.link)
+                                }
+                              >
+                                {item.title}
+                              </a>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </>
           ) : (
             <>
               <img src={UploadIcon} alt="UploadIcon" />
-              <p className="text-[#1A1A1F] text-sm leading-5">
+              <p className="text-[#1A1A1F] text-sm leading-5 ml-28 md:ml-28">
                 ჩააგდეთ ფაილი აქ ან
                 <input
-                  {...register("image", {
-                    required: true,
-                  })}
-                  onChange={handleImageChange}
+                  {...register("image")}
+                  onChange={(e) => handleImageChange(e)}
                   accept="image/*"
                   type="file"
                   className={`custom-file-input pl-1 font-medium`}
@@ -403,7 +454,7 @@ const Inputs = () => {
             />
           </div>
           {emailWatch.length > 0 && !emailWatch.includes("redberry.ge") ? (
-            <div className="flex flex-row gap-x-2 mt-2">
+            <div className="absolute flex flex-row gap-x-2 mt-2">
               <img src={errorIcon} alt="errorIcon" />
               <span className="text-[#EA1919] text-xs leading-5">
                 მეილი უნდა მთავრდებოდეს @redberry.ge-ით
