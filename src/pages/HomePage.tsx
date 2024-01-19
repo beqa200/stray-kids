@@ -7,6 +7,7 @@ const HomePage = () => {
   const context = useUserContext();
 
   const [findButton, setFindButton] = useState<string[]>([]);
+
   const btn = [
     {
       id: 1,
@@ -45,27 +46,24 @@ const HomePage = () => {
       color: "#1AC7A8",
     },
   ];
-
-  const handleButtonClick = (clickedButton: string) => {
-    if (findButton.includes(clickedButton)) {
-      setFindButton(findButton.filter((button) => button !== clickedButton));
+  const handleButtonClick = (category: string) => {
+    if (findButton.includes(category)) {
+      setFindButton((prevButtons) =>
+        prevButtons.filter((btn) => btn !== category)
+      );
     } else {
-      setFindButton([...findButton, clickedButton]);
+      setFindButton((prevButtons) => [...prevButtons, category]);
     }
   };
 
   const filterData = findButton.length
-    ? data.filter((item) =>
-        item.button.some((button) => findButton.includes(button.text))
+    ? context.info.filter((item) =>
+        item.categories.some((category: { title: string }) =>
+          findButton.includes(category.title)
+        )
       )
-    : data;
+    : context.info;
 
-  // const filterData = findButton
-  //   ? data.filter((item) =>
-  //       item.button.find((button) => button.text === findButton)
-  //     )
-  //   : data;
-  // unda davumatot all buttoni unda vikitxo
   return (
     <div
       className={` ${
@@ -78,6 +76,7 @@ const HomePage = () => {
           src="./assets/Blog-1024x355 1.png"
           alt=""
         />
+
         <h1 className=" text-[44px] font-bold leading-[52px] md:text-[64px] md:leading-[72px] md:order-1">
           ბლოგი
         </h1>
@@ -104,48 +103,57 @@ const HomePage = () => {
         className="flex flex-wrap  items-center justify-center gap-2 md:gap-5 xl:gap-8 md:items-start 
       "
       >
-        {filterData.map((item: any) => (
-          <div key={item.id}>
+        {filterData?.map((_item) => (
+          <div key={_item.id}>
             <section className=" w-[340px] flex flex-wrap  items-center justify-center xl:w-[408px]   gap-14">
               <div className="flex flex-col gap-6">
                 <img
                   className=" w-[340px]  rounded-xl bg-teal-500 xl:w-[408px]"
-                  src={item.img}
+                  src={_item.image}
                   alt=""
                 />
                 <div className="flex flex-col items-start justify-between gap-4 ">
                   <div className="flex flex-col items-start justify-start gap-1">
                     <p className="text-[14px] font-medium leading-5 xl:text-[16px]">
-                      {item.name}
+                      {_item.author}
                     </p>
                     <p className="text-[12px]  font-normal leading-4 text-[#85858D]">
-                      {item.day}
+                      {_item.publish_date}
                     </p>
                   </div>
                   <h2 className=" font-medium leading-5 text-[16px] xl:text-[20px] h-[56px]">
-                    {item.title}
+                    {_item.title} ase tu ise rogorc iuyo da aris da iqneba
+                    rogorc vpiqrobt
                   </h2>
 
-                  <div className="flex flex-wrap items-start justify-start h-[28px]">
-                    {item.button.map((button: any) => (
-                      <button
-                        key={button.id}
-                        className={` text-[12px] font-medium leading-4 px-2.5 py-1.5 mr-2 rounded-[30px]`}
-                        style={{ background: button.bg, color: button.color }}
-                      >
-                        {button.text}
-                      </button>
+                  <div className="flex flex-wrap items-start justify-start h-[50px]">
+                    {_item.categories.map((item: any) => (
+                      <div key={item}>
+                        <div
+                          style={{
+                            background: item.background_color,
+                            color: item.text_color,
+                          }}
+                          className=" mb-1 text-[12px] font-medium leading-4 px-2.5 py-1.5 mr-2 rounded-[30px]"
+                        >
+                          {item.title}
+                        </div>
+                      </div>
                     ))}
                   </div>
                   <p
                     className={` ${
                       context.darkLight ? "text-[#404049] " : "text-[#85858D]"
-                    }  text-[12px] font-normal  xl:text-[16px] h-[56px]`}
+                    }  text-[12px] font-normal  xl:text-[16px] h-[54px] overflow-hidden`}
                   >
-                    {item.text}
+                    {_item.description} Lorem ipsum dolor, sit amet consectetur
+                    adipisicing elit. Est, qui sapiente? Perferendis
+                    necessitatibus libero distinctio, similique cumque atque
+                    optio aperiam hic consectetur deserunt consequuntur sapiente
+                    nihil cupiditate, rem tenetur laudantium?
                   </p>
                   <Link
-                    to={"/:id" + item.name}
+                    to={`/${_item.id}`}
                     className="text-[#5D37F3] text-[14px]  font-medium leading-5 flex flex-row items-center justify-center  mt-4 mb-[56px]"
                   >
                     სრულად ნახვა <MdOutlineArrowOutward size={18} />

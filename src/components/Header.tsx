@@ -51,7 +51,7 @@ export default function Header() {
               onClick={() => context.setFontMenu(!context.fontMenu)}
               className="flex flex-row items-center gap-2 md:w-[110px]"
             >
-              <p className="hidden md:flex">{context.findFont}</p>{" "}
+              <span className="hidden md:flex">{context.findFont}</span>{" "}
               <MdOutlineKeyboardArrowDown size={20} />
             </p>
             {context.fontMenu && (
