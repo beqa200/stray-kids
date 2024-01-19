@@ -1,7 +1,7 @@
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../context";
-import data from "../../data.json";
+
 import { useState } from "react";
 const HomePage = () => {
   const context = useUserContext();
