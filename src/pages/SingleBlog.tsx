@@ -8,7 +8,7 @@ import {
 } from "react";
 import { useParams } from "react-router-dom";
 import { useUserContext } from "../context";
-import Carousel from "../components/Carousel";
+import Carusel from "../components/Carusel";
 
 const SingleBlog = () => {
   const context = useUserContext();
@@ -118,7 +118,7 @@ const SingleBlog = () => {
         </div>
         <div>მსგავსი სტატიები</div>
       </div>
-      <Carousel />
+      <Carusel />
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import { useUserContext } from "../context";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useEffect, useState } from "react";
+("use client");
+import { Button } from "flowbite-react";
 export default function Header() {
   const context = useUserContext();
 
@@ -100,14 +102,17 @@ export default function Header() {
             ></button>
           </div>
 
-          <button
+          <Button
             onClick={() => {
               context.setLogin(!context.login);
             }}
-            className={`px-4 py-2 bg-[#5D37f3] rounded-lg text-[12px] font-medium cursor-pointer text-[#fff]  md:px-5 md:py-2.5 md:text-[14px]`}
+            outline
+            gradientDuoTone="purpleToBlue"
+            className={`   
+            text-[12px] font-medium    md:text-[14px]`}
           >
             შესვლა
-          </button>
+          </Button>
         </div>
       </div>
     </header>
