@@ -15,6 +15,20 @@
   height: 100vh;
 }
 
+.category-input-container {
+  position: relative;
+  cursor: pointer;
+  width: 288px;
+  border: 1px solid #e4e3eb;
+  background-color: #fcfcfd;
+  transition: border 0.3s;
+}
+
+.category-input-container:hover {
+  border: 1px solid #5d37f3;
+  border-width: 1.5px;
+}
+
 @layer base {
   html {
     font-family: "FiraGO", sans-serif;
