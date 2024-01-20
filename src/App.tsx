@@ -20,6 +20,7 @@ type BlogCategory = {
 };
 
 type BlogData = {
+  [x: string]: any;
   id: number;
   author: string;
   categories: BlogCategory;
