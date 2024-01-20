@@ -64,14 +64,16 @@ const categoryArray = [
 
 const Inputs = () => {
   const [categoryMenu, setCategoryMenu] = useState<boolean>(false);
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(
+    localStorage.getItem("image") || null
+  );
   const [gift, setGift] = useState<boolean>(false);
   // const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(
+    JSON.parse(localStorage.getItem("selectedCategories") || "[]")
+  );
   const [imageError, setImageError] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
-
-  console.log(imageError);
 
   const gifts = [
     {
@@ -88,6 +90,7 @@ const Inputs = () => {
 
   const handleCategorySelect = (category: string) => {
     if (!selectedCategories.includes(category)) {
+      localStorage.setItem("category", selectedCategories.join(",") || "");
       setSelectedCategories((prevCategories) => [...prevCategories, category]);
       setCategoryMenu(false);
     }
@@ -139,14 +142,50 @@ const Inputs = () => {
   };
 
   const onSubmit = async (data: FieldValues) => {
+    console.log("Form Data:", data);
+
+    localStorage.setItem("author", data.author || "");
+    localStorage.setItem("title", data.title || "");
+    localStorage.setItem("description", data.description || "");
+    localStorage.setItem("date", data.date || "");
+    localStorage.setItem("email", data.email || "");
+
+    // Handle empty category input
     if (selectedCategories.length === 0) {
       setValue("category", "");
-      setValue("category", "");
-      return;
+      localStorage.setItem("category", "");
+    } else {
+      localStorage.setItem("category", selectedCategories.join(",") || "");
     }
+
     setModal(true);
-    console.log(data);
   };
+
+  const loadDataFromLocalStorage = () => {
+    const storedAuthor = localStorage.getItem("author") || "";
+    const storedTitle = localStorage.getItem("title") || "";
+    const storedDescription = localStorage.getItem("description") || "";
+    const storedDate = localStorage.getItem("date") || "";
+    const storedEmail = localStorage.getItem("email") || "";
+    const storedImage = localStorage.getItem("image") || "";
+    const storedSelectedCategories = JSON.parse(
+      localStorage.getItem("selectedCategories") || "[]"
+    );
+
+    // Set the form values from localStorage
+    setValue("author", storedAuthor);
+    setValue("title", storedTitle);
+    setValue("description", storedDescription);
+    setValue("date", storedDate);
+    setValue("email", storedEmail);
+    setValue("image", storedImage);
+    setSelectedCategories(storedSelectedCategories);
+  };
+
+  useEffect(() => {
+    // Load form data from localStorage when the component mounts
+    loadDataFromLocalStorage();
+  }, []);
 
   const titleWatch = watch("title", "");
   const descriptionWatch = watch("description", "");
@@ -161,14 +200,30 @@ const Inputs = () => {
   console.log("Errors:", errors.category);
 
   useEffect(() => {
-    // Remove duplicates from selected categories
-    const uniqueCategories = [...new Set(selectedCategories)];
+    // Store form data in localStorage whenever it changes
+    localStorage.setItem("author", authorWatch || "");
+    localStorage.setItem("title", titleWatch || "");
+    localStorage.setItem("description", descriptionWatch || "");
+    localStorage.setItem("date", dateWatch || "");
+    localStorage.setItem("email", emailWatch || "");
+    localStorage.setItem("image", imageWatch || "");
+    localStorage.setItem(
+      "selectedCategories",
+      JSON.stringify(selectedCategories)
+    );
+  }, [
+    authorWatch,
+    titleWatch,
+    descriptionWatch,
+    dateWatch,
+    emailWatch,
+    imageWatch,
+    selectedCategories,
+  ]);
 
-    // Join the unique categories with a comma and set the input value
-    setValue("category", uniqueCategories.join(", "));
-
-    // Add any additional logic you need
-  }, [selectedCategories, setValue, imageWatch]);
+  useEffect(() => {
+    localStorage.setItem("image", image || "");
+  }, [image]);
 
   const validateGeorgianWords = (value: string): boolean => {
     const georgianRegex = /^[\u10A0-\u10FF\s]+$/;
@@ -188,6 +243,19 @@ const Inputs = () => {
     const emailRegex = /^[^\s]+@redberry\.ge$/;
     return emailRegex.test(value) || "Email should end with redberry.ge";
   };
+
+  useEffect(() => {
+    // Store selected categories in localStorage
+    localStorage.setItem(
+      "selectedCategories",
+      JSON.stringify(selectedCategories)
+    );
+  }, [selectedCategories]);
+
+  useEffect(() => {
+    // Retrieve values from localStorage and set them in the form
+    setValue("category", selectedCategories.join(","));
+  }, [setValue, selectedCategories]);
 
   return (
     <>
@@ -260,9 +328,6 @@ const Inputs = () => {
                                   key={item.id}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  onClick={() =>
-                                    console.log("Link clicked:", item.link)
-                                  }
                                 >
                                   {item.title}
                                 </a>
@@ -506,11 +571,11 @@ const Inputs = () => {
                 >
                   <input
                     {...register("category", {
-                      required: "",
+                      required: "Category is required",
                     })}
                     type="text"
-                    value={""}
-                    // value={selectedCategories.join(", ")}
+                    value={selectedCategories.length > 0 ? "." : ""}
+                    readOnly
                     placeholder={
                       selectedCategories.length > 0 ? "" : "აირჩიეთ კატეგორია"
                     }
