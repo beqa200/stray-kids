@@ -7,7 +7,6 @@ import { FaChevronDown } from "react-icons/fa6";
 import { FaChevronUp } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import Category from "./Category";
-// import { CiCircleRemove } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import { MdDateRange } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -580,10 +579,10 @@ const Inputs = () => {
                       selectedCategories.length > 0 ? "" : "აირჩიეთ კატეგორია"
                     }
                     className={`
-    ${errors.category ? "border-red-600" : ""}
-    ${categoriesWatch.length > 1 ? "border-green-600" : ""}
-    overflow-y-auto relative cursor-pointer min-w-[288px] min-h-[55px] max-h-[90px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
-    hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
+                    ${errors.category ? "border-red-600" : ""}
+                    ${categoriesWatch.length > 1 ? "border-green-600" : ""}
+                    overflow-y-auto relative cursor-pointer min-w-[288px] min-h-[55px] max-h-[90px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
+                    hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
                     onChange={(e) => {
                       e.preventDefault();
                     }}
