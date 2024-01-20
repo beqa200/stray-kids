@@ -20,7 +20,7 @@ const Category = ({ categoryArray, onCategorySelect }: CategoryProps) => {
       animate={{ opacity: 3, y: 0 }}
       transition={{ duration: 1 }}
     >
-      <div className="absolute p-2 flex flex-wrap gap-2 border bg-white shadow-2xl border-[#E4E3EB] rounded-xl max-w-[288px]">
+      <div className="absolute p-2 flex flex-wrap gap-3 border bg-white shadow-2xl border-[#E4E3EB] rounded-xl max-w-[288px]">
         {categoryArray.map((category) => {
           return (
             <div key={category.id}>

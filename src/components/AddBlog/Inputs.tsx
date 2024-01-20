@@ -73,6 +73,9 @@ const Inputs = () => {
   );
   const [imageError, setImageError] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
+  const [categoryError, setCategoryError] = useState<boolean>(false);
+  const [imageBorder, setImageBorder] = useState<string>("border-gray-400");
+  const [imageNames, setImageNames] = useState<string[]>([]);
 
   const gifts = [
     {
@@ -89,8 +92,8 @@ const Inputs = () => {
 
   const handleCategorySelect = (category: string) => {
     if (!selectedCategories.includes(category)) {
-      localStorage.setItem("category", selectedCategories.join(",") || "");
       setSelectedCategories((prevCategories) => [...prevCategories, category]);
+      setCategoryError(false);
       setCategoryMenu(false);
     }
   };
@@ -99,6 +102,7 @@ const Inputs = () => {
     setSelectedCategories((prevCategories) =>
       prevCategories.filter((selectedCategory) => selectedCategory !== category)
     );
+    setCategoryError(false);
   };
 
   const getCategoryBgColor = (categoryName: string): string | undefined => {
@@ -133,10 +137,18 @@ const Inputs = () => {
       const imageUrl = URL.createObjectURL(selectedFile);
       setImage(imageUrl);
       setValue("image", imageUrl);
+
+      // Set border color to green when an image is selected
+      setImageBorder("border-green-500");
+
+      // Update the file names with the latest one
+      setImageNames([selectedFile.name]);
     } else {
-      // If no file is selected, reset the watch length
+      // If no file is selected, reset the watch length, set border color to gray, and clear file names
       setValue("image", "");
       setImage(null);
+      setImageBorder("border-gray-400");
+      setImageNames([]);
     }
   };
 
@@ -151,9 +163,9 @@ const Inputs = () => {
 
     // Handle empty category input
     if (selectedCategories.length === 0) {
-      setValue("category", "");
-      localStorage.setItem("category", "");
+      setCategoryError(true);
     } else {
+      setCategoryError(false);
       localStorage.setItem("category", selectedCategories.join(",") || "");
     }
 
@@ -196,7 +208,7 @@ const Inputs = () => {
 
   console.log("categoriesWatch", categoriesWatch, categoriesWatch.length);
 
-  console.log("Errors:", errors.category);
+  console.log("Errors:", errors);
 
   useEffect(() => {
     // Store form data in localStorage whenever it changes
@@ -219,6 +231,8 @@ const Inputs = () => {
     imageWatch,
     selectedCategories,
   ]);
+
+  console.log(imageNames);
 
   useEffect(() => {
     localStorage.setItem("image", image || "");
@@ -252,9 +266,10 @@ const Inputs = () => {
   }, [selectedCategories]);
 
   useEffect(() => {
-    // Retrieve values from localStorage and set them in the form
-    setValue("category", selectedCategories.join(","));
-  }, [setValue, selectedCategories]);
+    // Set initial values for "category" and "image" fields when component mounts
+    setValue("category", selectedCategories.join(",") || "");
+    setValue("image", image || "");
+  }, [selectedCategories, image, setValue]);
 
   return (
     <>
@@ -273,7 +288,7 @@ const Inputs = () => {
           </h3>
           <div
             className={`${
-              imageError ? "border-green-500" : "border-gray-400"
+              imageError ? "border-green-500" : imageBorder
             } w-[280px] md:w-[590px] border w-full bg-[#F4F3FF] py-12 flex justify-center items-center flex-col space-y-6 border-dashed rounded-xl ${
               imageWatch.length > 0
                 ? "border border-green-500"
@@ -282,6 +297,7 @@ const Inputs = () => {
           >
             {image ? (
               <>
+                <h1 className="font-bold text-xl text-center">{imageNames}</h1>
                 <img
                   src={image}
                   alt={`${image} Uploaded`}
@@ -533,7 +549,7 @@ const Inputs = () => {
                     type="text"
                     placeholder="22/01/2024"
                     value={dateWatch}
-                    className={`relative cursor-pointer min-w-[288px] min-h-[55px] max-h-[90px] ${
+                    className={`h-[80px] relative cursor-pointer min-w-[288px] min-h-[55px] max-h-[90px] ${
                       errors.date && "border-[#EA1919] hover:border-[#EA1919]"
                     } ${
                       dateWatch.length >= 10 &&
@@ -578,7 +594,7 @@ const Inputs = () => {
                     placeholder={
                       selectedCategories.length > 0 ? "" : "აირჩიეთ კატეგორია"
                     }
-                    className={`
+                    className={`h-[80px]
                     ${errors.category ? "border-red-600" : ""}
                     ${categoriesWatch.length > 1 ? "border-green-600" : ""}
                     overflow-y-auto relative cursor-pointer min-w-[288px] min-h-[55px] max-h-[90px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
@@ -593,6 +609,12 @@ const Inputs = () => {
                   </span>
                   {selectedCategories.length > 0 && (
                     <div className="absolute top-1 left-0 flex flex-row flex-wrap">
+                      {categoryError && (
+                        <div className="text-red-600 text-xs leading-5 mt-1">
+                          Please select at least one category.
+                        </div>
+                      )}
+
                       {selectedCategories.map((category) => (
                         <div
                           key={category}
@@ -671,9 +693,15 @@ const Inputs = () => {
             <div className="my-10 flex justify-end">
               <button
                 type="submit"
-                // disabled={Object.keys(errors).length > 0}
+                disabled={
+                  Object.keys(errors).length > 0 ||
+                  !watch("category") ||
+                  !watch("image")
+                }
                 className={`${
-                  errors === undefined
+                  Object.keys(errors).length > 0 ||
+                  !watch("category") ||
+                  !watch("image")
                     ? "bg-[#E4E3EB] hover:shadow-none"
                     : "bg-[#5D37F3]"
                 } text-white text-sm font-medium leading-5 py-[10px] w-[288px] rounded-lg hover:shadow-2xl transition-all duration-500`}
@@ -687,14 +715,18 @@ const Inputs = () => {
       {modal && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-70 z-50">
           <div className="relative bg-white rounded-xl w-[480px] h-[260px] flex justify-center items-center flex-col">
-            <IoMdClose size={25} className="absolute right-4 top-4" />
+            <IoMdClose
+              size={25}
+              className="absolute right-4 top-4 cursor-pointer"
+              onClick={() => setModal(false)}
+            />
             <img src={complete} alt="complete" />
             <div className="flex  flex-col items-center gap-y-10">
               <h1 className="text-[#1A1A1F] text-xl font-bold leading-4 mt-5">
                 ჩანაწერი წარმატებით დაემატა
               </h1>
               <Link to={"/"}>
-                <button className="w-full bg-[#5D37F3] py-3 w-[432px] rounded-md text-white font-bold text-base">
+                <button className="w-full bg-[#5D37F3] py-3 w-[432px] px-4 rounded-md text-white font-bold text-base">
                   მთავარ გვერდზე დაბრუნება
                 </button>
               </Link>
