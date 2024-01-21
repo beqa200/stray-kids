@@ -6,7 +6,17 @@ import { GiEvilMoon } from "react-icons/gi";
 import { Dropdown } from "flowbite-react";
 export default function Header() {
   const context = useUserContext();
+  const handleScrollToTop = () => {
+    const scrollStep = -window.scrollY; // Adjust the number to control the speed
 
+    const scrollInterval = setInterval(() => {
+      if (window.scrollY !== 0) {
+        window.scrollBy(0, scrollStep);
+      } else {
+        clearInterval(scrollInterval);
+      }
+    }, 15); // Adjust the interval for smoother animation
+  };
   const [scroll, setScroll] = useState<any>(0.0);
 
   const handleScroll = () => {
@@ -93,6 +103,7 @@ export default function Header() {
           <Button
             onClick={() => {
               context.setLogin(!context.login);
+              handleScrollToTop();
             }}
             outline
             gradientDuoTone={`${
