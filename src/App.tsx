@@ -86,18 +86,18 @@ function App() {
   const getApi = async () => {
     try {
       const response = await fetch(
-        "https://api.blog.redberryinternship.ge/api/blogs",
+        "https://tsereteli.pythonanywhere.com/blogs/",
         {
           headers: {
-            Authorization:
-              "Bearer 55c33fd3f2a7d8debd873352bb2ff1470b56cc0ce898d878243645c8d8e6e0ac",
+            Authorization: "Token 5ff3a2857f04d55a45d896731934ee626f0053ac",
           },
         }
       );
 
       const data = await response.json();
+
       if (response.ok) {
-        setInfo(data.data);
+        setInfo(data);
       } else {
         setInfo([]);
       }

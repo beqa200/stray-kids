@@ -36,19 +36,19 @@ const HomePage = () => {
       color: "#B71FDD",
     },
     {
-      id: 1,
+      id: 4,
       text: "UI/UX",
       bg: "rgba(250, 87, 87, 0.08)",
       color: "#DC2828",
     },
     {
-      id: 1,
+      id: 5,
       text: "კვლევა",
       bg: "rgba(112, 207, 37, 0.08)",
       color: "#60BE16",
     },
     {
-      id: 1,
+      id: 6,
       text: "Figma",
       bg: "rgba(8, 210, 174, 0.08)",
       color: "#1AC7A8",
@@ -71,7 +71,7 @@ const HomePage = () => {
         )
       )
     : context.info;
-
+  console.log(context.info);
   return (
     <div
       className={` ${
@@ -170,31 +170,33 @@ const HomePage = () => {
                       transition={{ duration: 1 }}
                     >
                       <h2 className=" font-medium leading-5 text-[16px] xl:text-[20px] h-[56px]">
-                        {_item.title} ase tu ise rogorc iuyo da aris da iqneba
-                        rogorc vpiqrobt
+                        {_item.title}
                       </h2>
                     </motion.div>
 
                     <div className="flex flex-wrap items-start justify-start h-[50px]">
-                      {_item.categories.map((item: any) => (
-                        <motion.div
-                          initial={{ opacity: 0, x: -300 }}
-                          animate={{ opacity: 3, x: 0 }}
-                          transition={{ duration: 1 }}
-                        >
-                          <div key={item}>
-                            <div
-                              style={{
-                                background: item.background_color,
-                                color: item.text_color,
-                              }}
-                              className=" mb-1 text-[12px] font-medium leading-4 px-2.5 py-1.5 mr-2 rounded-[30px]"
-                            >
-                              {item.title}
+                      {_item.categories.map((item: any, index: number) => {
+                        return (
+                          <motion.div
+                            initial={{ opacity: 0, x: -300 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 1 }}
+                            key={index}
+                          >
+                            <div>
+                              <div
+                                style={{
+                                  color: item.background_color,
+                                  background: item.text_color,
+                                }}
+                                className="mb-1 text-[12px] font-medium leading-4 px-2.5 py-1.5 mr-2 rounded-[30px]"
+                              >
+                                {item.name}
+                              </div>
                             </div>
-                          </div>
-                        </motion.div>
-                      ))}
+                          </motion.div>
+                        );
+                      })}
                     </div>
                     <motion.div
                       initial={{ opacity: 0, x: -300 }}
@@ -206,7 +208,7 @@ const HomePage = () => {
                           context.darkLight
                             ? "text-[#404049] "
                             : "text-[#85858D]"
-                        }  text-[12px] font-normal  xl:text-[16px] h-[54px] overflow-hidden`}
+                        }  text-[12px] font-normal  xl:text-[16px] h-[54px] overflow-hidden `}
                       >
                         {_item.description} Lorem ipsum dolor, sit amet
                         consectetur adipisicing elit. Est, qui sapiente?
