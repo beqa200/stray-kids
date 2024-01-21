@@ -10,6 +10,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useUserContext } from "../context";
 import Carusel from "../components/Carusel";
 import { FaArrowCircleLeft } from "react-icons/fa";
+import PreviousButtonImage from "../assets/Arrow.svg";
+
 const SingleBlog = () => {
   const context = useUserContext();
   const { id } = useParams();
@@ -70,12 +72,13 @@ const SingleBlog = () => {
           onClick={() => {
             goBack();
           }}
-          className="flex flex-row items-center justify-between z-10 w-full left-0  top-0 absolute "
+          className="flex flex-row items-center justify-between z-10 w-[44px] left-0  top-0 absolute "
         >
-          <FaArrowCircleLeft
+          {/* <FaArrowCircleLeft
             style={{ color: context.darkLight ? "#0e101c" : "white" }}
             size={18}
-          />
+          /> */}
+          <img src={PreviousButtonImage} alt="" />
         </button>
       </div>
       <div

@@ -264,11 +264,7 @@ const Inputs = () => {
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        encType="multipart/form-data"
-        className="mx-auto flex justify-center flex-col items-center"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <motion.div
           initial={{ opacity: 0, x: 600 }}
           animate={{ opacity: 3, x: 0 }}
