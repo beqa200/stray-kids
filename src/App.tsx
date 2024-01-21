@@ -10,6 +10,7 @@ import ScrollToTop from "./utils/ScrollOnTop";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
+import Tedo from "./components/Tedo";
 
 type BlogCategory = {
   [x: string]: any;
@@ -44,6 +45,8 @@ export type MyContextProps = {
   getApi: () => void;
   info: BlogData[] | [];
   setInfo: (value: BlogData[]) => void;
+  tedo: boolean;
+  setTedo: (value: boolean) => void;
 };
 
 function App() {
@@ -53,7 +56,7 @@ function App() {
   const [findFont, setFindFont] = useState<string>("გრიგოლია");
   const [fontMenu, setFontMenu] = useState<boolean>(false);
   const [info, setInfo] = useState<BlogData[]>([]);
-
+  const [tedo, setTedo] = useState<boolean>(false);
   useEffect(() => {
     document.body.style.fontFamily = findFont;
   }, [findFont]);
@@ -115,19 +118,28 @@ function App() {
         getApi,
         info,
         setInfo,
+        tedo,
+        setTedo,
       }}
     >
-      <ScrollToTop />
-      <Header />
-      {login ? <Login /> : ""}
-      {singUp ? <SignUp /> : ""}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/:id" element={<SingleBlog />} />
-        <Route path="/addBlog" element={<AddBlog />} />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-      <Footer />
+      {tedo ? (
+        <Tedo />
+      ) : (
+        <>
+          <ScrollToTop />
+          <Header />
+          {login ? <Login /> : ""}
+          {singUp ? <SignUp /> : ""}
+
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/:id" element={<SingleBlog />} />
+            <Route path="/addBlog" element={<AddBlog />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+          <Footer />
+        </>
+      )}
     </MyContext.Provider>
   );
 }

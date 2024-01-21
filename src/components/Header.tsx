@@ -1,5 +1,4 @@
 import { useUserContext } from "../context";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useEffect, useState } from "react";
 ("use client");
 import { Button } from "flowbite-react";
@@ -52,8 +51,9 @@ export default function Header() {
         <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
           <div className=" hidden md:flex flex-row items-center justify-between  relative">
             <Dropdown
+              outline
               gradientDuoTone={`${
-                context.darkLight ? "pinkToOrange" : "purpleToBlue"
+                context.darkLight ? "purpleToBlue" : "pinkToOrange"
               }`}
               label={context.findFont}
               dismissOnClick={false}
@@ -95,7 +95,9 @@ export default function Header() {
               context.setLogin(!context.login);
             }}
             outline
-            gradientDuoTone="purpleToBlue"
+            gradientDuoTone={`${
+              context.darkLight ? "purpleToBlue" : "pinkToOrange"
+            }`}
             className={`   
             text-[12px] font-medium    md:text-[14px]`}
           >

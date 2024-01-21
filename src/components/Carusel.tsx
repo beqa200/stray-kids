@@ -45,7 +45,11 @@ export default function Carusel() {
   return (
     <>
       {" "}
-      <p className="w-full font-medium leading-5 text-[22px] xl:text-[32px] my-10">
+      <p
+        className={` ${
+          context.darkLight ? "  text-[#1A1A1F]" : " text-[#FFF]"
+        }  w-full font-medium leading-5 text-[22px] xl:text-[32px] my-10`}
+      >
         მსგავსი სტატიები
       </p>
       <div

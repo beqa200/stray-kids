@@ -72,7 +72,10 @@ const SingleBlog = () => {
           }}
           className="flex flex-row items-center justify-between z-10 w-full left-0  top-0 absolute "
         >
-          <FaArrowCircleLeft size={18} />
+          <FaArrowCircleLeft
+            style={{ color: context.darkLight ? "#0e101c" : "white" }}
+            size={18}
+          />
         </button>
       </div>
       <div
@@ -80,7 +83,7 @@ const SingleBlog = () => {
           context.darkLight ? "  text-[#1A1A1F]" : " text-[#FFF]"
         }  flex flex-col items-start justify-between gap-10 w-[350px] xl:w-[720px]`}
       >
-        <img src={blog.image} className=" w-[720px]" alt="" />
+        <img src={blog.image} className=" md:w-[720px]" alt="" />
         <div className="flex flex-col items-start justify-between gap-2">
           <p className="text-[14px] font-medium leading-5 xl:text-[16px]">
             {" "}
