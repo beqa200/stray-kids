@@ -6,13 +6,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useUserContext } from "../context";
 import Carusel from "../components/Carusel";
-
+import { FaArrowCircleLeft } from "react-icons/fa";
 const SingleBlog = () => {
   const context = useUserContext();
   const { id } = useParams();
+  const navigate = useNavigate();
   const [blog, setBlog] = useState<Blog | null>(null);
   type BlogCategory = {
     [x: string]: any;
@@ -55,17 +56,31 @@ const SingleBlog = () => {
   }, []);
 
   if (!blog) {
-    // Loading state or handle if the blog is not found
     return <div>Loading...</div>;
   }
+
+  const goBack = () => {
+    navigate(-1);
+  };
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center  mt-[184px] relative ">
+      <div className="">
+        {" "}
+        <button
+          onClick={() => {
+            goBack();
+          }}
+          className="flex flex-row items-center justify-between z-10 w-full left-0  top-0 absolute "
+        >
+          <FaArrowCircleLeft size={18} />
+        </button>
+      </div>
       <div
         className={` ${
           context.darkLight ? "  text-[#1A1A1F]" : " text-[#FFF]"
-        }  mt-[64px] p-10 flex flex-col items-start justify-between gap-10`}
+        }  flex flex-col items-start justify-between gap-10 w-[350px] xl:w-[720px]`}
       >
-        <img src={blog.image} alt="" />
+        <img src={blog.image} className=" w-[720px]" alt="" />
         <div className="flex flex-col items-start justify-between gap-2">
           <p className="text-[14px] font-medium leading-5 xl:text-[16px]">
             {" "}
@@ -116,7 +131,6 @@ const SingleBlog = () => {
             {blog.description}
           </p>
         </div>
-        <div>მსგავსი სტატიები</div>
       </div>
       <Carusel />
     </div>
