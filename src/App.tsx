@@ -11,6 +11,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
 import Tedo from "./components/Tedo";
+import AddBlogHeader from "./components/AddBlog/AddBlogHeader";
 
 type BlogCategory = {
   [x: string]: any;
@@ -50,13 +51,21 @@ export type MyContextProps = {
 };
 
 function App() {
-  const [darkLight, setDarkLight] = useState<boolean>(true);
+  const [darkLight, setDarkLight] = useState<boolean>(() => {
+    const savedDarkLight = localStorage.getItem("darkLight");
+    return savedDarkLight ? JSON.parse(savedDarkLight) : true;
+  });
   const [login, setLogin] = useState<boolean>(false);
   const [singUp, setSingUp] = useState<boolean>(false);
-  const [findFont, setFindFont] = useState<string>("გრიგოლია");
+  const [findFont, setFindFont] = useState<string>("ფონტები");
   const [fontMenu, setFontMenu] = useState<boolean>(false);
   const [info, setInfo] = useState<BlogData[]>([]);
   const [tedo, setTedo] = useState<boolean>(false);
+
+  useEffect(() => {
+    localStorage.setItem("darkLight", JSON.stringify(darkLight));
+  }, [darkLight]);
+
   useEffect(() => {
     document.body.style.fontFamily = findFont;
   }, [findFont]);
@@ -127,17 +136,52 @@ function App() {
       ) : (
         <>
           <ScrollToTop />
-          <Header />
+          {/* <Header /> */}
           {login ? <Login /> : ""}
           {singUp ? <SignUp /> : ""}
 
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/:id" element={<SingleBlog />} />
-            <Route path="/addBlog" element={<AddBlog />} />
-            <Route path="*" element={<ErrorPage />} />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Header />
+                  <HomePage />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/:id"
+              element={
+                <>
+                  <Header />
+                  <SingleBlog />
+                  <Footer />
+                </>
+              }
+            />
+            <Route
+              path="/AddBlog"
+              element={
+                <>
+                  <AddBlogHeader />
+                  <AddBlog />
+                </>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <>
+                  <Header />
+                  <ErrorPage />
+                  <Footer />
+                </>
+              }
+            />
           </Routes>
-          <Footer />
+          {/* <Footer /> */}
         </>
       )}
     </MyContext.Provider>

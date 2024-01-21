@@ -7,7 +7,7 @@ const AddBlog = () => {
   return (
     <>
       <PreviousButton />
-      <div className="relative mt-20 md:mt-32 max-w-[600px] mx-auto p-10 md:p-0">
+      <div className="relative max-w-[600px] mx-auto p-10 md:p-0">
         <Title />
         {/* <UploadFile /> */}
         <Inputs />

@@ -5,7 +5,7 @@ const PreviousButton = () => {
   return (
     <Link to={"/"}>
       <img
-        className="fixed left-5 top-[105px] md:left-20 md:top-24 cursor-pointer hover:drop-shadow-2xl"
+        className="fixed left-5 top-[105px] md:left-20 md:top-[130px] cursor-pointer hover:drop-shadow-2xl"
         src={PreviousButtonImage}
         alt="PreviousButtonImage"
       />

@@ -11,6 +11,7 @@ import { IoMdClose } from "react-icons/io";
 import { MdDateRange } from "react-icons/md";
 import { Link } from "react-router-dom";
 import complete from "../../assets/complete.svg";
+// import { useUserContext } from "../../context";
 
 interface InputsForm {
   author: string;
@@ -77,11 +78,13 @@ const Inputs = () => {
   const [imageBorder, setImageBorder] = useState<string>("border-gray-400");
   const [imageNames, setImageNames] = useState<string[]>([]);
 
+  // const context = useUserContext();
+
   const gifts = [
     {
       id: 1,
       title: "ლაზარესგან",
-      link: "https://www.youtube.com/watch?v=s4pQ5aj6vx8&list=PLDDSw2MiQpC3qpKfxGdbS1DtE5FeY9fWp&index=8",
+      link: "https://www.youtube.com/watch?v=h3LAmt_Yeq0",
     },
     {
       id: 2,
@@ -138,13 +141,10 @@ const Inputs = () => {
       setImage(imageUrl);
       setValue("image", imageUrl);
 
-      // Set border color to green when an image is selected
       setImageBorder("border-green-500");
 
-      // Update the file names with the latest one
       setImageNames([selectedFile.name]);
     } else {
-      // If no file is selected, reset the watch length, set border color to gray, and clear file names
       setValue("image", "");
       setImage(null);
       setImageBorder("border-gray-400");
@@ -194,7 +194,6 @@ const Inputs = () => {
   };
 
   useEffect(() => {
-    // Load form data from localStorage when the component mounts
     loadDataFromLocalStorage();
   }, []);
 
@@ -205,10 +204,6 @@ const Inputs = () => {
   const authorWatch = watch("author", "");
   const imageWatch = watch("image", "");
   const categoriesWatch = watch("category", "");
-
-  console.log("categoriesWatch", categoriesWatch, categoriesWatch.length);
-
-  console.log("Errors:", errors);
 
   useEffect(() => {
     // Store form data in localStorage whenever it changes
@@ -231,8 +226,6 @@ const Inputs = () => {
     imageWatch,
     selectedCategories,
   ]);
-
-  console.log(imageNames);
 
   useEffect(() => {
     localStorage.setItem("image", image || "");
@@ -258,7 +251,6 @@ const Inputs = () => {
   };
 
   useEffect(() => {
-    // Store selected categories in localStorage
     localStorage.setItem(
       "selectedCategories",
       JSON.stringify(selectedCategories)
@@ -266,18 +258,13 @@ const Inputs = () => {
   }, [selectedCategories]);
 
   useEffect(() => {
-    // Set initial values for "category" and "image" fields when component mounts
     setValue("category", selectedCategories.join(",") || "");
     setValue("image", image || "");
   }, [selectedCategories, image, setValue]);
 
   return (
     <>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        encType="multipart/form-data"
-        className="mx-auto flex justify-center flex-col items-center"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <motion.div
           initial={{ opacity: 0, x: 600 }}
           animate={{ opacity: 3, x: 0 }}
@@ -289,7 +276,7 @@ const Inputs = () => {
           <div
             className={`${
               imageError ? "border-green-500" : imageBorder
-            } w-[280px] md:w-[590px] border w-full bg-[#F4F3FF] py-12 flex justify-center items-center flex-col space-y-6 border-dashed rounded-xl ${
+            } w-[280px] md:w-[590px] border bg-[#F4F3FF] py-12 flex justify-center items-center flex-col space-y-6 border-dashed rounded-xl ${
               imageWatch.length > 0
                 ? "border border-green-500"
                 : "border-gray-600"
@@ -357,22 +344,24 @@ const Inputs = () => {
               </>
             ) : (
               <div
-                className={`${
+                className={` w-full items-center text-center justify-center mx-auto ${
                   !imageError ? "border-red-400" : "border-green-400"
-                } flex flex-col items-center`}
+                } flex flex-col gap-y-4 items-center`}
               >
                 <img src={UploadIcon} alt="UploadIcon" />
-                <p className="text-[#1A1A1F] text-sm leading-5 ml-28 md:ml-28">
-                  ჩააგდეთ ფაილი აქ ან
+                <div className="flex flex-row justify-center items-center w-full text-center mx-auto">
+                  <p className="hidden md:block text-[#1A1A1F] text-sm leading-5">
+                    ჩააგდეთ ფაილი აქ ან
+                  </p>
                   <input
                     {...register("image", { required: true })}
                     onChange={(e) => handleImageChange(e)}
                     accept="image/*"
                     type="file"
-                    className={`custom-file-input pl-1 font-medium`}
+                    className={`custom-file-input pl-1 font-medium w-[140px]`}
                     name="image"
                   />
-                </p>
+                </div>
               </div>
             )}
           </div>
@@ -409,7 +398,7 @@ const Inputs = () => {
                   className={` ${
                     errors.author
                       ? "border-[#EA1919] hover:border-[#EA1919]"
-                      : "border border-[#14D81C]"
+                      : "border-[#14D81C] hover:border-[#14D81C]"
                   }  ${
                     (errors.author && authorWatch.length < 4) ||
                     errors.author ||
@@ -417,7 +406,7 @@ const Inputs = () => {
                       ? "border-[#14D81C] hover-border-[#14D81C]"
                       : ""
                   }${
-                    !errors.author && "border-green-600 "
+                    !errors.author && "border-green-400 "
                   }  w-[288px] mb-2 py-3 pl-4 border border-[#E4E3EB] bg-[#FCFCFD] rounded-xl
             hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
                   placeholder="შეიყვანეთ ავტორი"
@@ -456,7 +445,9 @@ const Inputs = () => {
                   </li>
                 </div>
               </div>
-              {/* სათაური */}
+
+              {/*            ******************** სათაური **************             */}
+
               <div className="flex flex-col">
                 <label className="text-[#1A1A1F] text-sm font-medium leading-5 mb-2">
                   სათაური*
@@ -473,15 +464,15 @@ const Inputs = () => {
                     errors.title && "border-[#EA1919] hover:border-[#EA1919]"
                   } ${
                     titleWatch.length >= 2 &&
-                    "border-[#14D81C] hover:border-[#14D81C]"
-                  } w-[288px] mb-2 py-3 pl-4 border  bg-[#FCFCFD] rounded-xl
+                    "border-green-400 hover:border-[#14D81C]"
+                  } w-[288px] mb-2 py-3 pl-4 border border-[#E4E3EB] bg-[#FCFCFD] rounded-xl
             hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
                   type="text"
                   placeholder="შეიყვანეთ სათაური"
                 />
                 <li
                   className={`${errors.title && "text-red-600"} ${
-                    titleWatch.length >= 2 && "text-green-600"
+                    titleWatch.length >= 2 && "text-lime-500"
                   } text-[#85858D] text-xs leading-5 ml-4`}
                 >
                   მინიმუმ 2 სიმბოლო
@@ -489,7 +480,7 @@ const Inputs = () => {
               </div>
             </div>
           </motion.div>
-          {/* აღწერა */}
+          {/*   ****************** აღწერა ********************* */}
           <motion.div
             initial={{ opacity: 0, x: 300 }}
             animate={{ opacity: 3, x: 0 }}
@@ -507,11 +498,11 @@ const Inputs = () => {
                     message: "Description must be at least 2 characters",
                   },
                 })}
-                className={`${
+                className={`border-[#E4E3EB] ${
                   errors.description && "border-red-600 hover:border-red-600"
                 } ${
                   descriptionWatch.length >= 2 &&
-                  "border-[#14D81C] hover:border-[#14D81C]"
+                  "border-green-500 hover:border-green-500 outline-none"
                 } min-h-[124px]  bg-[#FCFCFD] border rounded-xl pt-3 pl-4
           hover:border-[#5D37F3] hover:border-[1.5px] outline-none w-[300px] md:w-full`}
                 placeholder="შეიყვანეთ აღწერა"
@@ -527,7 +518,7 @@ const Inputs = () => {
               </li>
             </div>
           </motion.div>
-          {/*  */}
+          {/*  ******************************** Date ************************* */}
           <div className="mt-6 flex flex-col space-y-4 md:space-y-0 md:flex-row justify-between space-x-0 md:space-x-2 ">
             <motion.div
               initial={{ opacity: 0, x: -300 }}
@@ -549,7 +540,7 @@ const Inputs = () => {
                     type="text"
                     placeholder="22/01/2024"
                     value={dateWatch}
-                    className={`h-[80px] relative cursor-pointer min-w-[288px] min-h-[55px] max-h-[90px] ${
+                    className={`h-[80px] relative  cursor-pointer min-w-[288px] min-h-[55px] max-h-[90px] ${
                       errors.date && "border-[#EA1919] hover:border-[#EA1919]"
                     } ${
                       dateWatch.length >= 10 &&
@@ -663,7 +654,7 @@ const Inputs = () => {
                 })}
                 type="text"
                 placeholder="Example@redberry.ge"
-                className={`
+                className={` border-[#E4E3EB]
                 emailWatch.length > 0 && !emailWatch.includes("redberry.ge")
                   ? "border-red-600 hover:border-red-600"
                   : ""
@@ -726,7 +717,9 @@ const Inputs = () => {
                 ჩანაწერი წარმატებით დაემატა
               </h1>
               <Link to={"/"}>
-                <button className="w-full bg-[#5D37F3] py-3 w-[432px] px-4 rounded-md text-white font-bold text-base">
+                <button
+                  className={`bg-[#5D37F3] py-3 w-[432px] px-4 rounded-md text-white font-bold text-base`}
+                >
                   მთავარ გვერდზე დაბრუნება
                 </button>
               </Link>
