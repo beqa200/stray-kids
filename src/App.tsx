@@ -48,6 +48,8 @@ export type MyContextProps = {
   setInfo: (value: BlogData[]) => void;
   tedo: boolean;
   setTedo: (value: boolean) => void;
+  loginEmail: boolean;
+  setLoginEmail: (loginEmail: boolean) => void;
 };
 
 function App() {
@@ -61,7 +63,7 @@ function App() {
   const [fontMenu, setFontMenu] = useState<boolean>(false);
   const [info, setInfo] = useState<BlogData[]>([]);
   const [tedo, setTedo] = useState<boolean>(false);
-
+  const [loginEmail, setLoginEmail] = useState<boolean>(true);
   useEffect(() => {
     localStorage.setItem("darkLight", JSON.stringify(darkLight));
   }, [darkLight]);
@@ -129,6 +131,8 @@ function App() {
         setInfo,
         tedo,
         setTedo,
+        loginEmail,
+        setLoginEmail,
       }}
     >
       {tedo ? (
