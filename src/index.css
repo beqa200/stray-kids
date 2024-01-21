@@ -7,6 +7,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  position: relative;
+  height: 100%;
+}
 #root {
   display: flex;
   flex-direction: column;
@@ -49,4 +53,7 @@ input[type="file"]::before {
   color: black;
   text-decoration: underline;
   cursor: pointer;
+} */
+.slick-slide {
+  max-width: 450px;
 }

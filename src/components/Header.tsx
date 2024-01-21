@@ -1,9 +1,22 @@
 import { useUserContext } from "../context";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useEffect, useState } from "react";
+("use client");
+import { Button } from "flowbite-react";
+import { GiEvilMoon } from "react-icons/gi";
+import { Dropdown } from "flowbite-react";
 export default function Header() {
   const context = useUserContext();
+  const handleScrollToTop = () => {
+    const scrollStep = -window.scrollY; // Adjust the number to control the speed
 
+    const scrollInterval = setInterval(() => {
+      if (window.scrollY !== 0) {
+        window.scrollBy(0, scrollStep);
+      } else {
+        clearInterval(scrollInterval);
+      }
+    }, 15); // Adjust the interval for smoother animation
+  };
   const [scroll, setScroll] = useState<any>(0.0);
 
   const handleScroll = () => {
@@ -46,68 +59,61 @@ export default function Header() {
         />
 
         <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
-          <div className="flex flex-row items-center justify-between  relative">
-            <p
-              onClick={() => context.setFontMenu(!context.fontMenu)}
-              className="flex flex-row items-center gap-2 md:w-[110px]"
+          <div className=" hidden md:flex flex-row items-center justify-between  relative">
+            <Dropdown
+              outline
+              gradientDuoTone={`${
+                context.darkLight ? "purpleToBlue" : "pinkToOrange"
+              }`}
+              label={context.findFont}
+              dismissOnClick={false}
             >
-              <span className="hidden md:flex">{context.findFont}</span>{" "}
-              <MdOutlineKeyboardArrowDown size={20} />
-            </p>
-            {context.fontMenu && (
-              <div
-                className={` ${
-                  context.darkLight
-                    ? "bg-[#fff]  shadow-[0px_5px_30px_0px_#00000019]"
-                    : "bg-[#0e101c]  shadow-[0px_5px_30px_0px_#5D37f3]"
-                } flex  px-5  py-2.5 flex-col items-start justify-between gap-2  absolute top-12 right-[-110px] md:right-0 rounded-xl`}
+              <Dropdown.Item
+                onClick={() => {
+                  context.setFindFont(" გრიგოლია"), context.setFontMenu(false);
+                }}
               >
-                <p
-                  onClick={() => {
-                    context.setFindFont(" გრიგოლია"),
-                      context.setFontMenu(false);
-                  }}
-                >
-                  გრიგოლია
-                </p>{" "}
-                <p
-                  onClick={() => {
-                    context.setFindFont("შეგიძლია"), context.setFontMenu(false);
-                  }}
-                >
-                  შეგიძლია{" "}
-                </p>{" "}
-                <p
-                  onClick={() => {
-                    context.setFindFont(" დასქრინო"),
-                      context.setFontMenu(false);
-                  }}
-                >
-                  დასქრინო
-                </p>
-              </div>
-            )}
+                გრიგოლია
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  context.setFindFont("შეგიძლია"), context.setFontMenu(false);
+                }}
+              >
+                შეგიძლია{" "}
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  context.setFindFont(" დასქრინო"), context.setFontMenu(false);
+                }}
+              >
+                დასქრინო
+              </Dropdown.Item>
+            </Dropdown>
           </div>
+          <GiEvilMoon
+            onClick={() => {
+              context.setDarkLight(!context.darkLight);
+            }}
+            style={{ color: context.darkLight ? "#0e101c" : "white" }}
+            size={40}
+            className=" cursor-pointer"
+          />
 
-          <div className={`bg-[#85858D] w-10 h-5 rounded-xl relative `}>
-            <button
-              onClick={() => {
-                context.setDarkLight(!context.darkLight);
-              }}
-              className={` ${
-                context.darkLight ? "left-1 top-[3px]" : " right-1 top-[3px]"
-              }  absolute  w-3.5 h-3.5  rounded-full bg-white  cursor-pointer`}
-            ></button>
-          </div>
-
-          <button
+          <Button
             onClick={() => {
               context.setLogin(!context.login);
+              handleScrollToTop();
             }}
-            className={`px-4 py-2 bg-[#5D37f3] rounded-lg text-[12px] font-medium cursor-pointer text-[#fff]  md:px-5 md:py-2.5 md:text-[14px]`}
+            outline
+            gradientDuoTone={`${
+              context.darkLight ? "purpleToBlue" : "pinkToOrange"
+            }`}
+            className={`   
+            text-[12px] font-medium    md:text-[14px]`}
           >
             შესვლა
-          </button>
+          </Button>
         </div>
       </div>
     </header>
