@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@fontsource/firago": "^5.0.7",
+    "alk-life": "^1.0.0",
+    "alk-tall-nusxuri": "^1.0.0",
+    "bpg-mikheil-stefane": "^1.0.0",
     "flowbite-react": "^0.7.2",
     "framer-motion": "^10.18.0",
     "react": "^18.2.0",
@@ -18,8 +21,8 @@
     "react-hook-form": "^7.49.3",
     "react-icons": "^5.0.1",
     "react-input-mask": "^2.0.4",
-    "react-router-dom": "^6.21.2",
     "react-multi-carousel": "^2.8.4",
+    "react-router-dom": "^6.21.2",
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.0.5"

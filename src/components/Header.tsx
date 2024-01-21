@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Button } from "flowbite-react";
 import { GiEvilMoon } from "react-icons/gi";
 import { Dropdown } from "flowbite-react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 export default function Header() {
   const context = useUserContext();
   const handleScrollToTop = () => {
@@ -17,7 +19,7 @@ export default function Header() {
       }
     }, 15); // Adjust the interval for smoother animation
   };
-  const [scroll, setScroll] = useState<any>(0.0);
+  const [scroll, setScroll] = useState<number>(0.0);
 
   const handleScroll = () => {
     const scrollPosition = window.scrollY;
@@ -32,89 +34,125 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    document.body.style.fontFamily = context.findFont;
+  }, [context.findFont]);
+
+  useEffect(() => {
+    // Retrieve font from localStorage on page load
+    const savedFont = localStorage.getItem("selectedFont");
+    if (savedFont) {
+      context.setFindFont(savedFont);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.body.style.fontFamily = context.findFont;
+    localStorage.setItem("selectedFont", context.findFont);
+  }, [context.findFont]);
+
   const headerStyle = {
     backgroundColor: context.darkLight
       ? `rgba(255, 255, 255, ${1 - scroll})`
       : `rgba(14, 16, 28, ${1 - scroll})`,
   };
 
+  console.log(context.fontMenu);
+
   return (
     <header
       style={headerStyle}
       className={` ${
         context.darkLight
-          ? "  bg-white text-[#1A1A1F] border-[#E4E3EB]"
-          : "bg-[#0e101c] text-[#FFF]  border-[#404049]"
-      } flex flex-col items-center justify-between w-full md:h-20 px-5 py-5 md:px-10 xl:px-[76px] border-b border-solid  fixed top-0 z-10 `}
+          ? "bg-white text-[#1A1A1F] border-[#E4E3EB]"
+          : "bg-[#0e101c] text-[#FFF] border-[#404049]"
+      } flex flex-col items-center justify-between w-full md:h-20 px-5 py-5 md:px-10 xl:px-[76px] border-b border-solid fixed top-0 z-10`}
     >
-      <div className=" flex flex-row items-center justify-between w-full xl:w-[1288px]">
-        <img
-          className="w-[100px] md:w-[170px]"
-          src={` ${
-            context.darkLight
-              ? " ./assets/LOGO-02 3.png "
-              : "./assets/newLogo.svg"
-          }`}
-          alt=""
-        />
+      <div className="flex flex-row items-center justify-between w-full xl:w-[1288px]">
+        <motion.div
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 3, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <Link to={"/"}>
+            <img
+              className="w-[100px] md:w-[170px]"
+              src={
+                context.darkLight
+                  ? "./assets/LOGO-02 3.png"
+                  : "./assets/newLogo.svg"
+              }
+              alt=""
+            />
+          </Link>
+        </motion.div>
 
-        <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
-          <div className=" hidden md:flex flex-row items-center justify-between  relative">
-            <Dropdown
+        <motion.div
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 3, y: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
+            <div className="hidden md:flex flex-row items-center justify-between relative">
+              <Dropdown
+                outline
+                gradientDuoTone={
+                  context.darkLight ? "purpleToBlue" : "pinkToOrange"
+                }
+                label={context.findFont}
+                dismissOnClick={false}
+              >
+                <Dropdown.Item
+                  onClick={() => {
+                    context.setFindFont("FiraGO");
+                    context.setFontMenu(!context.fontMenu);
+                  }}
+                >
+                  FiraGo
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    context.setFindFont("ALK Life");
+                    context.setFontMenu(!context.fontMenu);
+                  }}
+                >
+                  ALK Life
+                </Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    context.setFindFont("BPG Mikheil Stefane");
+                    context.setFontMenu(!context.fontMenu);
+                  }}
+                >
+                  Stefane
+                </Dropdown.Item>
+              </Dropdown>
+            </div>
+            <GiEvilMoon
+              onClick={() => {
+                context.setDarkLight(!context.darkLight);
+              }}
+              style={{ color: context.darkLight ? "#0e101c" : "white" }}
+              size={40}
+              className="cursor-pointer"
+            />
+
+            <Button
+              onClick={() => {
+                context.setLogin(!context.login);
+                handleScrollToTop();
+              }}
               outline
-              gradientDuoTone={`${
+              gradientDuoTone={
                 context.darkLight ? "purpleToBlue" : "pinkToOrange"
-              }`}
-              label={context.findFont}
-              dismissOnClick={false}
+              }
+              className="text-[12px] font-medium md:text-[14px]"
             >
-              <Dropdown.Item
-                onClick={() => {
-                  context.setFindFont(" გრიგოლია"), context.setFontMenu(false);
-                }}
-              >
-                გრიგოლია
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  context.setFindFont("შეგიძლია"), context.setFontMenu(false);
-                }}
-              >
-                შეგიძლია{" "}
-              </Dropdown.Item>
-              <Dropdown.Item
-                onClick={() => {
-                  context.setFindFont(" დასქრინო"), context.setFontMenu(false);
-                }}
-              >
-                დასქრინო
-              </Dropdown.Item>
-            </Dropdown>
+              შესვლა
+            </Button>
           </div>
-          <GiEvilMoon
-            onClick={() => {
-              context.setDarkLight(!context.darkLight);
-            }}
-            style={{ color: context.darkLight ? "#0e101c" : "white" }}
-            size={40}
-            className=" cursor-pointer"
-          />
-
-          <Button
-            onClick={() => {
-              context.setLogin(!context.login);
-              handleScrollToTop();
-            }}
-            outline
-            gradientDuoTone={`${
-              context.darkLight ? "purpleToBlue" : "pinkToOrange"
-            }`}
-            className={`   
-            text-[12px] font-medium    md:text-[14px]`}
-          >
-            შესვლა
-          </Button>
-        </div>
+        </motion.div>
       </div>
     </header>
   );

@@ -50,13 +50,21 @@ export type MyContextProps = {
 };
 
 function App() {
-  const [darkLight, setDarkLight] = useState<boolean>(true);
+  const [darkLight, setDarkLight] = useState<boolean>(() => {
+    const savedDarkLight = localStorage.getItem("darkLight");
+    return savedDarkLight ? JSON.parse(savedDarkLight) : true;
+  });
   const [login, setLogin] = useState<boolean>(false);
   const [singUp, setSingUp] = useState<boolean>(false);
-  const [findFont, setFindFont] = useState<string>("გრიგოლია");
+  const [findFont, setFindFont] = useState<string>("ფონტები");
   const [fontMenu, setFontMenu] = useState<boolean>(false);
   const [info, setInfo] = useState<BlogData[]>([]);
   const [tedo, setTedo] = useState<boolean>(false);
+
+  useEffect(() => {
+    localStorage.setItem("darkLight", JSON.stringify(darkLight));
+  }, [darkLight]);
+
   useEffect(() => {
     document.body.style.fontFamily = findFont;
   }, [findFont]);
