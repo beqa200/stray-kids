@@ -93,7 +93,7 @@ const SingleBlog = () => {
           </div>
         </div>
         <div className="flex flex-col items-start justify-between gap-6">
-          <h2 className=" font-medium leading-5 text-[16px] xl:text-[20px] h-[56px]">
+          <h2 className=" font-medium leading-5 text-[22px] xl:text-[32px] h-[56px]">
             {blog.title}
           </h2>
           <div className="flex  flex-wrap items-center">
@@ -132,6 +132,7 @@ const SingleBlog = () => {
           </p>
         </div>
       </div>
+
       <Carusel />
     </div>
   );

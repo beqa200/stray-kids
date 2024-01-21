@@ -3,7 +3,8 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useEffect, useState } from "react";
 ("use client");
 import { Button } from "flowbite-react";
-
+import { GiEvilMoon } from "react-icons/gi";
+import { Dropdown } from "flowbite-react";
 export default function Header() {
   const context = useUserContext();
 
@@ -49,59 +50,45 @@ export default function Header() {
         />
 
         <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
-          <div className="flex flex-row items-center justify-between  relative">
-            <p
-              onClick={() => context.setFontMenu(!context.fontMenu)}
-              className="flex flex-row items-center gap-2 md:w-[110px]"
+          <div className=" hidden md:flex flex-row items-center justify-between  relative">
+            <Dropdown
+              gradientDuoTone={`${
+                context.darkLight ? "pinkToOrange" : "purpleToBlue"
+              }`}
+              label={context.findFont}
+              dismissOnClick={false}
             >
-              <span className="hidden md:flex">{context.findFont}</span>{" "}
-              <MdOutlineKeyboardArrowDown size={20} />
-            </p>
-            {context.fontMenu && (
-              <div
-                className={` ${
-                  context.darkLight
-                    ? "bg-[#fff]  shadow-[0px_5px_30px_0px_#00000019]"
-                    : "bg-[#0e101c]  shadow-[0px_5px_30px_0px_#5D37f3]"
-                } flex  px-5  py-2.5 flex-col items-start justify-between gap-2  absolute top-12 right-[-110px] md:right-0 rounded-xl`}
+              <Dropdown.Item
+                onClick={() => {
+                  context.setFindFont(" გრიგოლია"), context.setFontMenu(false);
+                }}
               >
-                <p
-                  onClick={() => {
-                    context.setFindFont(" გრიგოლია"),
-                      context.setFontMenu(false);
-                  }}
-                >
-                  გრიგოლია
-                </p>{" "}
-                <p
-                  onClick={() => {
-                    context.setFindFont("შეგიძლია"), context.setFontMenu(false);
-                  }}
-                >
-                  შეგიძლია{" "}
-                </p>{" "}
-                <p
-                  onClick={() => {
-                    context.setFindFont(" დასქრინო"),
-                      context.setFontMenu(false);
-                  }}
-                >
-                  დასქრინო
-                </p>
-              </div>
-            )}
+                გრიგოლია
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  context.setFindFont("შეგიძლია"), context.setFontMenu(false);
+                }}
+              >
+                შეგიძლია{" "}
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  context.setFindFont(" დასქრინო"), context.setFontMenu(false);
+                }}
+              >
+                დასქრინო
+              </Dropdown.Item>
+            </Dropdown>
           </div>
-
-          <div className={`bg-[#85858D] w-10 h-5 rounded-xl relative `}>
-            <button
-              onClick={() => {
-                context.setDarkLight(!context.darkLight);
-              }}
-              className={` ${
-                context.darkLight ? "left-1 top-[3px]" : " right-1 top-[3px]"
-              }  absolute  w-3.5 h-3.5  rounded-full bg-white  cursor-pointer`}
-            ></button>
-          </div>
+          <GiEvilMoon
+            onClick={() => {
+              context.setDarkLight(!context.darkLight);
+            }}
+            style={{ color: context.darkLight ? "#0e101c" : "white" }}
+            size={40}
+            className=" cursor-pointer"
+          />
 
           <Button
             onClick={() => {
