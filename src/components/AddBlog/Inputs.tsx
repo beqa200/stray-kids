@@ -153,7 +153,22 @@ const Inputs = () => {
   };
 
   const onSubmit = async (data: FieldValues) => {
-    console.log("Form Data:", data);
+    if (data) {
+      data.author === "";
+      console.log("Form Data:", data);
+    }
+
+    const formData = {
+      author: data.author || "",
+      title: data.title || "",
+      description: data.description || "",
+      date: data.date || "",
+      email: data.email || "",
+      image: data.image || "",
+      categories: selectedCategories,
+    };
+
+    console.log("FormData:", formData);
 
     localStorage.setItem("author", data.author || "");
     localStorage.setItem("title", data.title || "");
@@ -169,7 +184,43 @@ const Inputs = () => {
       localStorage.setItem("category", selectedCategories.join(",") || "");
     }
 
+    // Check if form data and validation are true
+    if (Object.keys(errors).length === 0 && selectedCategories.length > 0) {
+      // Reset the form values
+      setValue("author", "");
+      setValue("title", "");
+      setValue("description", "");
+      setValue("date", "");
+      setValue("email", "");
+      setValue("image", "");
+      setSelectedCategories([]);
+      setCategoryMenu(false);
+      setImage(null);
+      setImageNames([]);
+    }
+
     setModal(true);
+
+    try {
+      const response = await fetch(
+        "https://tsereteli.pythonanywhere.com/blogs/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Token 1551dba47b89d225d1859c0ad03b7076edd44a72",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      if (response.ok) {
+        setModal(true);
+      } else {
+        //
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   const loadDataFromLocalStorage = () => {
@@ -299,7 +350,7 @@ const Inputs = () => {
                       აირჩიეთ სხვა სურათი
                     </button>
                   )}
-                  {gift ? (
+                  {/* {gift ? (
                     <button
                       onClick={() => setGift(false)}
                       className="bg-red-400 text-white p-3 rounded-xl border-[#E4E3EB] hover:scale-110 duration-300"
@@ -313,7 +364,7 @@ const Inputs = () => {
                     >
                       აირჩიეთ საჩუქარი
                     </button>
-                  )}
+                  )} */}
 
                   <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
                     <div className="flex justify-center items-center">
