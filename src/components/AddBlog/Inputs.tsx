@@ -11,7 +11,7 @@ import { IoMdClose } from "react-icons/io";
 import { MdDateRange } from "react-icons/md";
 import { Link } from "react-router-dom";
 import complete from "../../assets/complete.svg";
-// import { useUserContext } from "../../context";
+import { useUserContext } from "../../context";
 
 interface InputsForm {
   author: string;
@@ -23,52 +23,19 @@ interface InputsForm {
   image: string;
 }
 
-const categoryArray = [
-  {
-    id: 1,
-    name: "მარკეტი",
-    color: "#FFFFFF",
-    bgColor: "#FFB82F",
-  },
-  {
-    id: 2,
-    name: "აპლიკაცია",
-    color: "#FFFFFF",
-    bgColor: "#1AC7A8",
-  },
-  {
-    id: 3,
-    name: "ხელოვნური ინტელექტი",
-    color: "#FFFFFF",
-    bgColor: "#B71FDD",
-  },
-  {
-    id: 4,
-    name: "UI/UX",
-    color: "#DC2828",
-    bgColor: "rgba(112, 207, 37, 0.08)",
-  },
-  {
-    id: 5,
-    name: "კვლევა",
-    color: "#60BE16",
-    bgColor: "#E9EFE9",
-  },
-  {
-    id: 6,
-    name: "Figma",
-    color: "#1AC7A8",
-    bgColor: "rgba(8, 210, 174, 0.08)",
-  },
-];
+interface Category {
+  id: number;
+  name: string;
+  background_color: string;
+  text_color: string;
+}
 
 const Inputs = () => {
   const [categoryMenu, setCategoryMenu] = useState<boolean>(false);
   const [image, setImage] = useState<string | null>(
     localStorage.getItem("image") || null
   );
-  const [gift, setGift] = useState<boolean>(false);
-  // const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [gift] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     JSON.parse(localStorage.getItem("selectedCategories") || "[]")
   );
@@ -77,6 +44,22 @@ const Inputs = () => {
   const [categoryError, setCategoryError] = useState<boolean>(false);
   const [imageBorder, setImageBorder] = useState<string>("border-gray-400");
   const [imageNames, setImageNames] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  const context = useUserContext();
+
+  useEffect(() => {
+    fetch("https://tsereteli.pythonanywhere.com/categories/")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        // console.log(data);
+        setCategories(data);
+      });
+  }, []);
+
+  console.log(categories);
 
   // const context = useUserContext();
 
@@ -109,16 +92,17 @@ const Inputs = () => {
   };
 
   const getCategoryBgColor = (categoryName: string): string | undefined => {
-    const selectedCategory = categoryArray.find(
+    const selectedCategory = categories.find(
       (category) => category.name === categoryName
     );
-    return selectedCategory?.bgColor;
+    return selectedCategory?.background_color;
   };
+
   const getCategoryColor = (categoryItem: string): string | undefined => {
-    const selectedCategory = categoryArray.find(
+    const selectedCategory = categories.find(
       (category) => category.name === categoryItem
     );
-    return selectedCategory?.color;
+    return selectedCategory?.text_color;
   };
 
   const {
@@ -158,11 +142,14 @@ const Inputs = () => {
       console.log("Form Data:", data);
     }
 
+    const publishDate = new Date(data.publish_date);
+    const localDateString = publishDate.toLocaleDateString("en-US");
+
     const formData = {
       author: data.author || "",
       title: data.title || "",
       description: data.description || "",
-      date: data.date || "",
+      publish_date: localDateString,
       email: data.email || "",
       image: data.image || "",
       categories: selectedCategories,
@@ -342,30 +329,14 @@ const Inputs = () => {
                   className="max-h-40 md:max-h-60 p-4 rounded-[40px] animate-pulse cursor-pointer hover:scale-110 transform transition-all duration-700"
                 />
                 <div className="relative flex flex-row gap-2 px-4">
-                  {gift ? null : (
+                  {!gift ? (
                     <button
                       className="bg-[#E4E3EB] p-3 rounded-xl border-[#E4E3EB] hover:scale-110 duration-300"
                       onClick={() => setImage(null)}
                     >
                       აირჩიეთ სხვა სურათი
                     </button>
-                  )}
-                  {/* {gift ? (
-                    <button
-                      onClick={() => setGift(false)}
-                      className="bg-red-400 text-white p-3 rounded-xl border-[#E4E3EB] hover:scale-110 duration-300"
-                    >
-                      აღარ მინდა საჩუქარი
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => setGift(!gift)}
-                      className="bg-green-400 text-white p-3 rounded-xl border-[#E4E3EB] hover:scale-110 duration-300"
-                    >
-                      აირჩიეთ საჩუქარი
-                    </button>
-                  )} */}
-
+                  ) : null}
                   <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
                     <div className="flex justify-center items-center">
                       {gift && (
@@ -426,7 +397,11 @@ const Inputs = () => {
             <div className="flex flex-col space-y-10 md:space-y-0 md:space-x-2 md:flex-row w-full justify-between">
               {/* ავტორი */}
               <div className="flex flex-col">
-                <label className="text-[#1A1A1F] text-sm font-medium leading-5 mb-2">
+                <label
+                  className={` ${
+                    context.darkLight ? "text-[#1A1A1F] " : "text-white"
+                  } text-sm font-medium leading-5 mb-2`}
+                >
                   ავტორი*
                 </label>
                 <input
@@ -500,7 +475,11 @@ const Inputs = () => {
               {/*            ******************** სათაური **************             */}
 
               <div className="flex flex-col">
-                <label className="text-[#1A1A1F] text-sm font-medium leading-5 mb-2">
+                <label
+                  className={` ${
+                    context.darkLight ? "text-[#1A1A1F] " : "text-white"
+                  } text-sm font-medium leading-5 mb-2`}
+                >
                   სათაური*
                 </label>
                 <input
@@ -538,7 +517,11 @@ const Inputs = () => {
             transition={{ duration: 1 }}
           >
             <div className="flex flex-col space-y-2 mt-6">
-              <label className="text-[#1A1A1F] text-sm font-medium leading-5">
+              <label
+                className={` ${
+                  context.darkLight ? "text-[#1A1A1F] " : "text-white"
+                } text-sm font-medium leading-5 `}
+              >
                 აღწერა *
               </label>
               <textarea
@@ -577,7 +560,11 @@ const Inputs = () => {
               transition={{ duration: 1 }}
             >
               <div className="flex flex-col space-y-2">
-                <label className="text-[#1A1A1F] text-sm font-medium leading-5">
+                <label
+                  className={` ${
+                    context.darkLight ? "text-[#1A1A1F] " : "text-white"
+                  } text-sm font-medium leading-5`}
+                >
                   გამოქვეყნების თარიღი *
                 </label>
                 <div className="relative w-[288px]">
@@ -615,7 +602,11 @@ const Inputs = () => {
               transition={{ duration: 1 }}
             >
               <div className="relative flex flex-col space-y-2 w-[288px]">
-                <label className="text-[#1A1A1F] text-sm font-medium leading-5">
+                <label
+                  className={` ${
+                    context.darkLight ? "text-[#1A1A1F] " : "text-white"
+                  } text-sm font-medium leading-5`}
+                >
                   კატეგორია *
                 </label>
                 <div
@@ -636,9 +627,13 @@ const Inputs = () => {
                     placeholder={
                       selectedCategories.length > 0 ? "" : "აირჩიეთ კატეგორია"
                     }
-                    className={`h-[80px]
+                    className={`${categoriesWatch} h-[80px]
                     ${errors.category ? "border-red-600" : ""}
-                    ${categoriesWatch.length > 1 ? "border-green-600" : ""}
+                    ${
+                      categoriesWatch.length > 1 && !errors.category
+                        ? "border-green-600"
+                        : ""
+                    }
                     overflow-y-auto relative cursor-pointer min-w-[288px] min-h-[55px] max-h-[90px] py-3 px-4 rounded-xl border border-[#E4E3EB] bg-[#FCFCFD]
                     hover:border-[#5D37F3] hover:border-[1.5px] outline-none`}
                     onChange={(e) => {
@@ -663,7 +658,7 @@ const Inputs = () => {
                           className="flex flex-row items-center gap-1 ml-1 hover:scale-110 duration-300 py-1 text-white px-2 rounded-[30px] text-xs font-medium leading-4 cursor-pointer"
                           style={{
                             backgroundColor: getCategoryBgColor(category),
-                            color: getCategoryColor(category),
+                            color: getCategoryColor(category)?.split(" ")[0],
                           }}
                         >
                           {category}{" "}
@@ -680,9 +675,8 @@ const Inputs = () => {
                 </div>
                 {categoryMenu && (
                   <Category
-                    categoryArray={categoryArray}
+                    categories={categories}
                     onCategorySelect={handleCategorySelect}
-                    // handleRemoveCategory={handleRemoveCategory}
                   />
                 )}
               </div>
@@ -695,7 +689,11 @@ const Inputs = () => {
             transition={{ duration: 1 }}
           >
             <div className="mt-6 flex flex-col space-y-2">
-              <label className="text-[#1A1A1F] text-sm font-medium leading-5">
+              <label
+                className={` ${
+                  context.darkLight ? "text-[#1A1A1F] " : "text-white"
+                } text-sm font-medium leading-5`}
+              >
                 ელ-ფოსტა
               </label>
               <input
