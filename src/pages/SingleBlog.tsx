@@ -33,7 +33,7 @@ const SingleBlog = () => {
     categories: BlogCategory;
     publish_date: number;
   };
-
+  const [count, setCount] = useState<number>(0);
   const getBlog = async () => {
     const response = await fetch(
       `https://tsereteli.pythonanywhere.com/blogs/${id}`,
@@ -47,6 +47,7 @@ const SingleBlog = () => {
 
     try {
       setBlog(data);
+      setCount(count + 1);
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +55,7 @@ const SingleBlog = () => {
 
   useEffect(() => {
     getBlog();
-  }, []);
+  }, [count]);
 
   if (!blog) {
     return <div>Loading...</div>;

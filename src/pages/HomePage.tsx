@@ -129,7 +129,7 @@ const HomePage = () => {
         ))}
       </div>
       <div
-        className="flex flex-wrap  items-center justify-center gap-2 md:gap-5 xl:gap-8 md:items-start
+        className="flex flex-wrap  items-center justify-center gap-2 md:gap-5 xl:gap-8 md:items-start xl:justify-start
       "
       >
         {filterData?.map((_item) => (
