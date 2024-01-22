@@ -118,7 +118,7 @@ const SingleBlog = () => {
                     color: _item.background_color,
                     background: _item.text_color,
                   }}
-                  className=" mb-1 text-[12px] font-medium leading-4 px-2.5 py-1.5 mr-2 rounded-[30px]"
+                  className=" mb-1  text-[12px] font-medium leading-4 px-2.5 py-1.5 mr-2 rounded-[30px]"
                 >
                   {_item.name}
                 </div>
@@ -128,7 +128,7 @@ const SingleBlog = () => {
           <p
             className={` ${
               context.darkLight ? "text-[#404049] " : "text-[#85858D]"
-            }  text-[12px] font-normal  xl:text-[16px] h-[54px] overflow-hidden`}
+            }  text-[12px] font-normal  xl:text-[16px] mb-10 overflow-hidden`}
           >
             {blog.description}
           </p>
