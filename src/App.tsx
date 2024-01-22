@@ -10,7 +10,6 @@ import ScrollToTop from "./utils/ScrollOnTop";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Footer from "./components/Footer";
-import Tedo from "./components/Tedo";
 import AddBlogHeader from "./components/AddBlog/AddBlogHeader";
 
 type BlogCategory = {
@@ -62,7 +61,7 @@ function App() {
   const [info, setInfo] = useState<BlogData[]>([]);
 
   const [loginEmail, setLoginEmail] = useState<boolean>(true);
-  const [changeLogin, setChangeLogin] = useState<boolean>(false);
+
   useEffect(() => {
     localStorage.setItem("darkLight", JSON.stringify(darkLight));
   }, [darkLight]);

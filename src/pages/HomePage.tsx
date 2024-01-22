@@ -66,12 +66,15 @@ const HomePage = () => {
 
   const filterData = findButton.length
     ? context.info.filter((item) =>
-        item.categories.some((category: { title: string }) =>
-          findButton.includes(category.title)
+        item.categories.some(
+          (category: { name?: string }) =>
+            category &&
+            category.name &&
+            findButton.includes(category.name.toLowerCase())
         )
       )
     : context.info;
-  console.log(context.info);
+
   return (
     <div
       className={` ${
@@ -126,7 +129,7 @@ const HomePage = () => {
         ))}
       </div>
       <div
-        className="flex flex-wrap  items-center justify-center gap-2 md:gap-5 xl:gap-8 md:items-start
+        className="flex flex-wrap  items-center justify-center gap-2 md:gap-5 xl:gap-8 md:items-start xl:justify-start
       "
       >
         {filterData?.map((_item) => (
@@ -210,12 +213,7 @@ const HomePage = () => {
                             : "text-[#85858D]"
                         }  text-[12px] font-normal  xl:text-[16px] h-[54px] overflow-hidden `}
                       >
-                        {_item.description} Lorem ipsum dolor, sit amet
-                        consectetur adipisicing elit. Est, qui sapiente?
-                        Perferendis necessitatibus libero distinctio, similique
-                        cumque atque optio aperiam hic consectetur deserunt
-                        consequuntur sapiente nihil cupiditate, rem tenetur
-                        laudantium?
+                        {_item.description}
                       </p>
                     </motion.div>
                     <motion.div
