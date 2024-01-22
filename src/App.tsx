@@ -46,8 +46,8 @@ export type MyContextProps = {
   getApi: () => void;
   info: BlogData[] | [];
   setInfo: (value: BlogData[]) => void;
-  tedo: boolean;
-  setTedo: (value: boolean) => void;
+  loginEmail: boolean;
+  setLoginEmail: (loginEmail: boolean) => void;
 };
 
 function App() {
@@ -60,8 +60,9 @@ function App() {
   const [findFont, setFindFont] = useState<string>("ფონტები");
   const [fontMenu, setFontMenu] = useState<boolean>(false);
   const [info, setInfo] = useState<BlogData[]>([]);
-  const [tedo, setTedo] = useState<boolean>(false);
 
+  const [loginEmail, setLoginEmail] = useState<boolean>(true);
+  const [changeLogin, setChangeLogin] = useState<boolean>(false);
   useEffect(() => {
     localStorage.setItem("darkLight", JSON.stringify(darkLight));
   }, [darkLight]);
@@ -86,18 +87,18 @@ function App() {
   const getApi = async () => {
     try {
       const response = await fetch(
-        "https://api.blog.redberryinternship.ge/api/blogs",
+        "https://tsereteli.pythonanywhere.com/blogs/",
         {
           headers: {
-            Authorization:
-              "Bearer 55c33fd3f2a7d8debd873352bb2ff1470b56cc0ce898d878243645c8d8e6e0ac",
+            Authorization: "Token 5ff3a2857f04d55a45d896731934ee626f0053ac",
           },
         }
       );
 
       const data = await response.json();
+
       if (response.ok) {
-        setInfo(data.data);
+        setInfo(data);
       } else {
         setInfo([]);
       }
@@ -127,63 +128,60 @@ function App() {
         getApi,
         info,
         setInfo,
-        tedo,
-        setTedo,
+
+        loginEmail,
+        setLoginEmail,
       }}
     >
-      {tedo ? (
-        <Tedo />
-      ) : (
-        <>
-          <ScrollToTop />
-          {/* <Header /> */}
-          {login ? <Login /> : ""}
-          {singUp ? <SignUp /> : ""}
+      <>
+        <ScrollToTop />
+        {/* <Header /> */}
+        {login ? <Login /> : ""}
+        {singUp ? <SignUp /> : ""}
 
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <Header />
-                  <HomePage />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/:id"
-              element={
-                <>
-                  <Header />
-                  <SingleBlog />
-                  <Footer />
-                </>
-              }
-            />
-            <Route
-              path="/AddBlog"
-              element={
-                <>
-                  <AddBlogHeader />
-                  <AddBlog />
-                </>
-              }
-            />
-            <Route
-              path="*"
-              element={
-                <>
-                  <Header />
-                  <ErrorPage />
-                  <Footer />
-                </>
-              }
-            />
-          </Routes>
-          {/* <Footer /> */}
-        </>
-      )}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Header />
+                <HomePage />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/:id"
+            element={
+              <>
+                <Header />
+                <SingleBlog />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/AddBlog"
+            element={
+              <>
+                <AddBlogHeader />
+                <AddBlog />
+              </>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <>
+                <Header />
+                <ErrorPage />
+                <Footer />
+              </>
+            }
+          />
+        </Routes>
+        {/* <Footer /> */}
+      </>
     </MyContext.Provider>
   );
 }

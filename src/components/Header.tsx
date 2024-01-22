@@ -93,7 +93,7 @@ export default function Header() {
           animate={{ opacity: 3, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <div className="flex flex-row items-center justify-between w-[180px] md:w-[380px]">
+          <div className="flex flex-row items-center justify-between w-[190px] md:w-[380px]">
             <div className="hidden md:flex flex-row items-center justify-between relative">
               <Dropdown
                 outline
@@ -137,20 +137,34 @@ export default function Header() {
               size={40}
               className="cursor-pointer"
             />
-
-            <Button
-              onClick={() => {
-                context.setLogin(!context.login);
-                handleScrollToTop();
-              }}
-              outline
-              gradientDuoTone={
-                context.darkLight ? "purpleToBlue" : "pinkToOrange"
-              }
-              className="text-[12px] font-medium md:text-[14px]"
-            >
-              შესვლა
-            </Button>
+            {context.loginEmail ? (
+              <Button
+                onClick={() => {
+                  context.setLogin(!context.login);
+                  handleScrollToTop();
+                }}
+                outline
+                gradientDuoTone={
+                  context.darkLight ? "purpleToBlue" : "pinkToOrange"
+                }
+                className="text-[12px] font-medium md:text-[14px]"
+              >
+                შესვლა
+              </Button>
+            ) : (
+              <Link to={"/AddBlog"}>
+                <Button
+                  outline
+                  gradientDuoTone={
+                    context.darkLight ? "purpleToBlue" : "pinkToOrange"
+                  }
+                  className="text-[10px] font-medium md:text-[14px]"
+                  style={{ font: "10px" }}
+                >
+                  დაამატე ბლოგი
+                </Button>
+              </Link>
+            )}
           </div>
         </motion.div>
       </div>

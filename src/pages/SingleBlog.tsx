@@ -9,7 +9,6 @@ import {
 import { useParams, useNavigate } from "react-router-dom";
 import { useUserContext } from "../context";
 import Carusel from "../components/Carusel";
-import { FaArrowCircleLeft } from "react-icons/fa";
 import PreviousButtonImage from "../assets/Arrow.svg";
 
 const SingleBlog = () => {
@@ -37,10 +36,10 @@ const SingleBlog = () => {
 
   const getBlog = async () => {
     const response = await fetch(
-      `https://api.blog.redberryinternship.ge/api/blogs/${id}`,
+      `https://tsereteli.pythonanywhere.com/blogs/${id}`,
       {
         headers: {
-          Authorization: `Bearer 55c33fd3f2a7d8debd873352bb2ff1470b56cc0ce898d878243645c8d8e6e0ac`,
+          Authorization: `Bearer 5ff3a2857f04d55a45d896731934ee626f0053ac`,
         },
       }
     );
@@ -74,10 +73,6 @@ const SingleBlog = () => {
           }}
           className="flex flex-row items-center justify-between z-10 w-[44px] left-0  top-0 absolute "
         >
-          {/* <FaArrowCircleLeft
-            style={{ color: context.darkLight ? "#0e101c" : "white" }}
-            size={18}
-          /> */}
           <img src={PreviousButtonImage} alt="" />
         </button>
       </div>
@@ -105,6 +100,7 @@ const SingleBlog = () => {
           <div className="flex  flex-wrap items-center">
             {blog.categories.map(
               (_item: {
+                [x: string]: ReactNode;
                 background_color: any;
                 text_color: any;
                 title:
@@ -119,12 +115,12 @@ const SingleBlog = () => {
               }) => (
                 <div
                   style={{
-                    background: _item.background_color,
-                    color: _item.text_color,
+                    color: _item.background_color,
+                    background: _item.text_color,
                   }}
                   className=" mb-1 text-[12px] font-medium leading-4 px-2.5 py-1.5 mr-2 rounded-[30px]"
                 >
-                  {_item.title}
+                  {_item.name}
                 </div>
               )
             )}
