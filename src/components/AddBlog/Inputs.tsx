@@ -35,7 +35,7 @@ const Inputs = () => {
   const [image, setImage] = useState<string | null>(
     localStorage.getItem("image") || null
   );
-  const [gift, setGift] = useState<boolean>(false);
+  const [gift] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(
     JSON.parse(localStorage.getItem("selectedCategories") || "[]")
   );
@@ -337,16 +337,6 @@ const Inputs = () => {
                       აირჩიეთ სხვა სურათი
                     </button>
                   ) : null}
-                  {/* {gift ? (
-                    <button
-                      onClick={() => setGift(false)}
-                      className="bg-red-400 text-white p-3 rounded-xl border-[#E4E3EB] hover:scale-110 duration-300"
-                    >
-                      აღარ მინდა საჩუქარი
-                    </button>
-                  ) : (
-                    <button>a</button>
-                  )} */}
                   <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
                     <div className="flex justify-center items-center">
                       {gift && (
