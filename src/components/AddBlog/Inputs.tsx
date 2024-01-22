@@ -142,11 +142,14 @@ const Inputs = () => {
       console.log("Form Data:", data);
     }
 
+    const publishDate = new Date(data.publish_date);
+    const localDateString = publishDate.toLocaleDateString("en-US");
+
     const formData = {
       author: data.author || "",
       title: data.title || "",
       description: data.description || "",
-      date: data.date || "",
+      publish_date: localDateString,
       email: data.email || "",
       image: data.image || "",
       categories: selectedCategories,
