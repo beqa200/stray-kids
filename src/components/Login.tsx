@@ -4,14 +4,12 @@ import { IoMdClose } from "react-icons/io";
 
 type FormData = {
   email: string;
-  // Add other fields if needed
 };
 
 export default function Login() {
   const context = useUserContext();
 
   const {
-    watch,
     register,
     handleSubmit,
     setError,

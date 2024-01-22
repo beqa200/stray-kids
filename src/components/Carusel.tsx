@@ -9,7 +9,7 @@ import Slider from "react-slick";
 import "../index.css";
 export default function Carusel() {
   const context = useUserContext();
-  const [findCategory, setFindCategory] = useState<string[]>([]);
+  const [findCategory] = useState<string[]>([]);
   const settings = {
     infinite: true,
     speed: 500,
