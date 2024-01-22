@@ -37,8 +37,7 @@ export default function Footer() {
           <div
             className={`flex flex-row items-center justify-center gap-2 md:gap-8`}
           >
-            <FaFacebook /> <FaSquareInstagram />{" "}
-            <FaTwitter onClick={() => context.setTedo(true)} />
+            <FaFacebook /> <FaSquareInstagram /> <FaTwitter />
           </div>
         </div>
       </div>
